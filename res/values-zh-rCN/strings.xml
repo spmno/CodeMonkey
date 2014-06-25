@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">猿APP</string>
+    <string name="title_section1">猿新闻</string>
+    <string name="title_section2">猿发现</string>
+    <string name="title_section3">动物园</string>
+    <string name="action_settings">设置</string>
+    <string name="action_info">我的信息</string>
+</resources>

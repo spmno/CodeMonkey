@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <ListView
-        android:id="@+id/discoveryListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-
+    
+	<ImageView android:id="@+id/new_image" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_margin="5dp"/>
+    
 </LinearLayout>
