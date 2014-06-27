@@ -1,7 +1,9 @@
 package com.dawnstep.codemonkey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Service;
 import android.content.Intent;
@@ -39,12 +41,16 @@ public class NewsService extends Service {
 
 	
 	public class NewsBinder extends Binder {
-		public List<String> getNews() {
-			List<String> data = new ArrayList<String>();
-	        data.add("测试数据1");
-	        data.add("测试数据2");
-	        data.add("测试数据3");
-	        data.add("测试数据4");
+		public List<Map<String, Object>> getNews() {
+			List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        map.put("content", "test1");
+	        
+	        data.add(map);
+	        
+	        map.put("content", "test2");
+	        
+	        data.add(map);
 	         
 	        return data;
 		}

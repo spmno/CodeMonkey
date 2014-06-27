@@ -1,6 +1,7 @@
 package com.dawnstep.codemonkey;
 
 import java.util.List;
+import java.util.Map;
 
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 public class NewsFragment extends Fragment {
 	private ListView newsListView;
@@ -38,8 +40,13 @@ public class NewsFragment extends Fragment {
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			// TODO Auto-generated method stub
 			mNewBinder = (NewsService.NewsBinder)binder;
-			List<String> newsList = mNewBinder.getNews();
-			newsListView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, newsList));
+			List<Map<String, Object>> newsList = mNewBinder.getNews();
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
+					newsList, 
+					R.layout.new_list_item,
+					new String[] {"image", "content"},
+					new int[] {R.id.new_image, R.id.new_content});
+			newsListView.setAdapter(adapter);
 		}
 
 		@Override
