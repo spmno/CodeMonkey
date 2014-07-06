@@ -40,7 +40,7 @@ public class NewsFragment extends Fragment {
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			// TODO Auto-generated method stub
 			mNewBinder = (NewsService.NewsBinder)binder;
-			List<Map<String, Object>> newsList = mNewBinder.getNews();
+			//List<Map<String, Object>> newsList = mNewBinder.getNews();
 			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
 					newsList, 
 					R.layout.new_list_item,
