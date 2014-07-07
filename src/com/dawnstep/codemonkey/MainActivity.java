@@ -2,6 +2,9 @@ package com.dawnstep.codemonkey;
 
 import java.util.Locale;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -72,6 +75,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		//创建默认的ImageLoader配置参数  
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration  
+                .createDefault(this);  
+          
+        //Initialize ImageLoader with configuration.  
+        ImageLoader.getInstance().init(configuration);
 	}
 
 	@Override

@@ -11,6 +11,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
@@ -79,18 +81,43 @@ public class NewsService extends Service {
 			
 			@Override
 			public void run() {
-				String urlPath = "http://192.168.2.231:3000/infos";
+				NewsManager newsManager = NewsManager.getInstance();
+				String urlPath = "http://192.168.2.231:3000/infos.json";
+				int offset = newsManager.getOffset();
+				String urlPathWithParam = urlPath 
+						+ "?"
+						+ "offset="
+						+ String.valueOf(offset);
+				
 				HttpClient client = new DefaultHttpClient();
-				HttpGet httpGet = new HttpGet(urlPath);
+				HttpGet httpGet = new HttpGet(urlPathWithParam);
 				StringBuilder builder = new StringBuilder();  
+				JSONArray jsonArray = null;  
+				
 				try {
 					HttpResponse response = client.execute(httpGet);  
 		            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));  
 		            for (String s = reader.readLine(); s != null; s = reader.readLine()) {  
 		                builder.append(s);  
 		            } 
+		            jsonArray = new JSONArray(builder.toString());
+		            int listLength = jsonArray.length();
+		            for (int i = 0; i < listLength; ++i) {
+		            	JSONObject jsonObject = jsonArray.getJSONObject(i);  
+		            	News news = new News();
+		            	String title = jsonObject.getString("title");
+		            	String content = jsonObject.getString("content");
+		            	JSONArray imageJsonArray = jsonObject.getJSONArray("images");
+		            	int imageJsonArrayLength = imageJsonArray.length();
+		            	for (int j = 0; j < imageJsonArrayLength; j++) {
+		            		JSONObject imageJsonObject = imageJsonArray.getJSONObject(j);
+		            	}
+		            	news.setTitle(title);
+		            	news.setContent(content);
+		            	newsManager.addNewsItem(news);
+		            }
 				} catch (Exception e) {
-					
+					e.printStackTrace();
 				}
 				
 				for (NewsDataListener listener : listenerContainer) {
