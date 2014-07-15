@@ -1,11 +1,13 @@
 package com.dawnstep.codemonkey;
 
 import java.io.InputStream;
+import java.util.List;
 
 public class News {
+	private String newsId;
 	private String title;
 	private String content;
-	private InputStream[] images;
+	private List<String> imagesURL;
 	
 	public String getTitle() {
 		return title;
@@ -19,11 +21,17 @@ public class News {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public InputStream[] getImages() {
-		return images;
+	public List<String> getImages() {
+		return imagesURL;
 	}
-	public void setImages(InputStream[] images) {
-		this.images = images;
+	public void setImages(List<String> images) {
+		this.imagesURL = images;
+	}
+	public String getNewsId() {
+		return newsId;
+	}
+	public void setNewsId(String newsId) {
+		this.newsId = newsId;
 	}
 
 }

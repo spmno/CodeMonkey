@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,18 +17,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.graphics.Bitmap; 
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements OnScrollListener {
+	
+	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
 	private NewsService.NewsBinder mNewBinder;
 	private NewsServiceConnection mNewsConnection;
 	private NewsHandler newsHandler;
+	List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
+	private NewsDataAdapter adapter;
+	private View moreView; //加载更多页面
+	private int lastItem;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -37,6 +51,11 @@ public class NewsFragment extends Fragment {
 		mNewsConnection = new NewsServiceConnection();
 		getActivity().bindService(intent, mNewsConnection, Context.BIND_AUTO_CREATE);
 		newsHandler = new NewsHandler();
+		moreView = getActivity().getLayoutInflater().inflate(R.layout.load, null);
+		adapter = new NewsDataAdapter();
+		newsListView.addFooterView(moreView);
+		newsListView.setAdapter(adapter);
+		newsListView.setOnScrollListener(NewsFragment.this);
 		return rootView;
 	}
 	
@@ -69,23 +88,97 @@ public class NewsFragment extends Fragment {
 		@Override
 		public void handleMessage(Message message) {
 			NewsManager newsManager = NewsManager.getInstance();
-			List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
+			
 			List<News> orignalList = newsManager.getNewsList();
 			
 			for (News news : orignalList) {
 	        	Map<String, Object> newsMap = new HashMap<String, Object>();
 	        	newsMap.put("title", news.getTitle());
 	        	newsMap.put("content", news.getContent());
+	        	newsMap.put("images", news.getImages());
 	        	newsList.add(newsMap);
 			}
 			
-			SimpleAdapter adapter = new SimpleAdapter(getActivity(),
-					newsList, 
-					R.layout.new_list_item,
-					new String[] {"image", "content"},
-					new int[] {R.id.new_image, R.id.new_content});
-			newsListView.setAdapter(adapter);
+			adapter.notifyDataSetChanged();
+            moreView.setVisibility(View.GONE); 
 		}
 	}
 
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		lastItem = firstVisibleItem + visibleItemCount - 1; 
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		int count = NewsManager.getInstance().getOffset();
+		if(lastItem == count  && scrollState == this.SCROLL_STATE_IDLE){ 
+			Log.i(TAG, "拉到最底部");
+            moreView.setVisibility(view.VISIBLE);
+		}  
+		mNewBinder.getNews();
+    }
+
+	class NewsDataAdapter extends BaseAdapter {
+
+		private NewsManager newsManager = NewsManager.getInstance();
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return newsManager.getOffset();
+		}
+
+		@Override
+		public Object getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return arg0;
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// TODO Auto-generated method stub
+			
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			News currentNews = newsManager.getNewsList().get(position);
+
+			if (!currentNews.getImages().isEmpty()) {
+
+				String imageUrl = currentNews.getImages().get(0);
+				if ((!imageUrl.isEmpty()) && (!imageUrl.equals("null"))) {
+					convertView = inflater.inflate(R.layout.new_list_item, null);
+					ImageView imageView = (ImageView)convertView.findViewById(R.id.new_image);
+					DisplayImageOptions options = new DisplayImageOptions.Builder()  
+	                .showImageOnLoading(R.drawable.ic_launcher)  
+	                .showImageOnFail(R.drawable.ic_launcher)  
+	                .cacheInMemory(true)  
+	                .cacheOnDisk(true)  
+	                .bitmapConfig(Bitmap.Config.RGB_565)  
+	                .build();
+					String absolutelyImageUrl = "http://192.168.2.231:3000" + imageUrl;
+					ImageLoader.getInstance().displayImage(absolutelyImageUrl, imageView, options); 
+				} else {
+					convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
+				}
+	 
+			} else {
+				convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
+			}
+			
+			TextView titleTextView = (TextView)convertView.findViewById(R.id.new_title);
+			titleTextView.setText(currentNews.getTitle());
+			TextView contentTextView = (TextView)convertView.findViewById(R.id.new_content);
+			contentTextView.setText(currentNews.getContent());
+			
+			return convertView;
+		}
+		
+	}
 }

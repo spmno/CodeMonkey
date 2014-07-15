@@ -82,7 +82,8 @@ public class NewsService extends Service {
 			@Override
 			public void run() {
 				NewsManager newsManager = NewsManager.getInstance();
-				String urlPath = "http://192.168.2.231:3000/infos.json";
+				//String urlPath = "http://192.168.2.231:3000/infos.json";
+				String urlPath = "http://115.29.139.76:3000//infos.json";
 				int offset = newsManager.getOffset();
 				String urlPathWithParam = urlPath 
 						+ "?"
@@ -105,15 +106,21 @@ public class NewsService extends Service {
 		            for (int i = 0; i < listLength; ++i) {
 		            	JSONObject jsonObject = jsonArray.getJSONObject(i);  
 		            	News news = new News();
+		            	String newsId = jsonObject.getString("id");
 		            	String title = jsonObject.getString("title");
 		            	String content = jsonObject.getString("content");
 		            	JSONArray imageJsonArray = jsonObject.getJSONArray("images");
 		            	int imageJsonArrayLength = imageJsonArray.length();
+		            	List<String> imagesURLList = new ArrayList<String>();
 		            	for (int j = 0; j < imageJsonArrayLength; j++) {
 		            		JSONObject imageJsonObject = imageJsonArray.getJSONObject(j);
+		            		String imageUrl = imageJsonObject.getString("photo");
+		            		imagesURLList.add(imageUrl);
 		            	}
+		            	news.setNewsId(newsId);
 		            	news.setTitle(title);
 		            	news.setContent(content);
+		            	news.setImages(imagesURLList);
 		            	newsManager.addNewsItem(news);
 		            }
 				} catch (Exception e) {
