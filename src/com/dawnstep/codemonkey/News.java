@@ -1,5 +1,6 @@
 package com.dawnstep.codemonkey;
 
+import java.util.Date;
 import java.util.List;
 
 import com.j256.ormlite.field.DataType;
@@ -17,8 +18,16 @@ public class News {
 	@DatabaseField()
 	private List<String> imagesURL;
 	@DatabaseField(dataType = DataType.BYTE_ARRAY)
-	byte[] imageBytes;
-
+	private byte[] imageBytes;
+	@DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
+	private Date updateTime;
+	
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 	public String getTitle() {
 		return title;
 	}

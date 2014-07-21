@@ -24,6 +24,10 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static Context appContext;
     private Map<String, Dao<News, Integer>> daoMaps = null;
     
+    static public void setContext(Context context) {
+		appContext = context;
+	}
+    
     public static synchronized NewsDatabaseHelper getInstance(){
 		if (databaseHelper == null) {
 			databaseHelper = new NewsDatabaseHelper(appContext);

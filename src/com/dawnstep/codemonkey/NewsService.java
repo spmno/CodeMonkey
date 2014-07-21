@@ -14,7 +14,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.dawnstep.codemonkey.ConnectManager.ConnectStatus;
+
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -25,6 +28,8 @@ public class NewsService extends Service {
 	
     private static final String TAG = "NewsService"; 
     private NewsBinder mNewBinder = new NewsBinder();
+    private NewsDataProvider currentDataProvider;
+    private Context appContext;
 	public NewsService() {
 	}
 
@@ -37,6 +42,19 @@ public class NewsService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		appContext = getApplicationContext();
+		ConnectManager connectManager = new ConnectManager();
+		if (connectManager.getNetStatus(appContext) == ConnectStatus.NONE_CONNECTED) {
+			currentDataProvider = 
+					NewsDataProviderFactory.getInstance().
+					createNewsDataProvider(NewsDataProviderFactory.ProviderType.DatabaseProvider);
+		} else {
+			currentDataProvider = 
+					NewsDataProviderFactory.getInstance().
+					createNewsDataProvider(NewsDataProviderFactory.ProviderType.NetProvider);
+		}
+		NewsDatabaseHelper.setContext(appContext);
+
 	}
 	
 	@Override
@@ -52,7 +70,6 @@ public class NewsService extends Service {
 
 	
 	public class NewsBinder extends Binder {
-		List<NewsDataListener> listenerContainer = new ArrayList<NewsDataListener>();
 		/* only for the test
 		public List<Map<String, Object>> getNews() {
 			List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
@@ -69,69 +86,12 @@ public class NewsService extends Service {
 		}
 		*/
 		public void addDataArrivedListener(NewsDataListener listener) {
-			listenerContainer.add(listener);
+			currentDataProvider.add(listener);
 		}
 		
 		public void getNews() {
-			GetNewsThread getNewsThread = new GetNewsThread();
-			getNewsThread.start();
+			currentDataProvider.getNews();
 		}
-		
-		class GetNewsThread extends Thread {
-			
-			@Override
-			public void run() {
-				NewsManager newsManager = NewsManager.getInstance();
-				//String urlPath = "http://192.168.2.231:3000/infos.json";
-				String urlPath = "http://115.29.139.76:3000//infos.json";
-				int offset = newsManager.getOffset();
-				String urlPathWithParam = urlPath 
-						+ "?"
-						+ "offset="
-						+ String.valueOf(offset);
 				
-				HttpClient client = new DefaultHttpClient();
-				HttpGet httpGet = new HttpGet(urlPathWithParam);
-				StringBuilder builder = new StringBuilder();  
-				JSONArray jsonArray = null;  
-				
-				try {
-					HttpResponse response = client.execute(httpGet);  
-		            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));  
-		            for (String s = reader.readLine(); s != null; s = reader.readLine()) {  
-		                builder.append(s);  
-		            } 
-		            jsonArray = new JSONArray(builder.toString());
-		            int listLength = jsonArray.length();
-		            for (int i = 0; i < listLength; ++i) {
-		            	JSONObject jsonObject = jsonArray.getJSONObject(i);  
-		            	News news = new News();
-		            	String newsId = jsonObject.getString("id");
-		            	String title = jsonObject.getString("title");
-		            	String content = jsonObject.getString("content");
-		            	JSONArray imageJsonArray = jsonObject.getJSONArray("images");
-		            	int imageJsonArrayLength = imageJsonArray.length();
-		            	List<String> imagesURLList = new ArrayList<String>();
-		            	for (int j = 0; j < imageJsonArrayLength; j++) {
-		            		JSONObject imageJsonObject = imageJsonArray.getJSONObject(j);
-		            		String imageUrl = imageJsonObject.getString("photo");
-		            		imagesURLList.add(imageUrl);
-		            	}
-		            	news.setNewsId(newsId);
-		            	news.setTitle(title);
-		            	news.setContent(content);
-		            	news.setImages(imagesURLList);
-		            	newsManager.addNewsItem(news);
-		            }
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				for (NewsDataListener listener : listenerContainer) {
-					listener.dataArrived();
-				}
-			}
-		}
-		
 	}
 }
