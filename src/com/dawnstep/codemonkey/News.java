@@ -1,24 +1,19 @@
 package com.dawnstep.codemonkey;
 
 import java.util.Date;
-import java.util.List;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName="news")
-public class News {
+
+public class News implements Cloneable {
 	@DatabaseField(canBeNull = false)
 	private String newsId;
 	@DatabaseField(canBeNull = false)	
 	private String title;
 	@DatabaseField(canBeNull = false)
 	private String content;
-	@DatabaseField()
-	private List<String> imagesURL;
-	@DatabaseField(dataType = DataType.BYTE_ARRAY)
-	private byte[] imageBytes;
+
 	@DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
 	
@@ -46,17 +41,15 @@ public class News {
 	public void setNewsId(String newsId) {
 		this.newsId = newsId;
 	}
-	public List<String> getImages() {
-		return imagesURL;
-	}
-	public void setImages(List<String> images) {
-		this.imagesURL = images;
-	}
-	public byte[] getImageBytes() {
-		return imageBytes;
-	}
-	public void setImageBytes(byte[] imageBytes) {
-		this.imageBytes = imageBytes;
-	}
 
+	@Override
+	public Object clone() {
+		News news = null;  
+        try{  
+        	news = (News)super.clone();  
+        }catch(CloneNotSupportedException e) {  
+            e.printStackTrace();  
+        }  
+        return news; 
+	}
 }

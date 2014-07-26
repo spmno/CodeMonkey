@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.graphics.Bitmap; 
+import android.graphics.BitmapFactory;
 
 public class NewsFragment extends Fragment implements OnScrollListener {
 	
@@ -92,10 +93,11 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 			List<News> orignalList = newsManager.getNewsList();
 			
 			for (News news : orignalList) {
+				List<NewsImage> newsImageList = newsManager.getNewsImage(news.getNewsId());
 	        	Map<String, Object> newsMap = new HashMap<String, Object>();
 	        	newsMap.put("title", news.getTitle());
 	        	newsMap.put("content", news.getContent());
-	        	newsMap.put("images", news.getImages());
+	        	newsMap.put("images", newsImageList.get(0).getImageBytes());
 	        	newsList.add(newsMap);
 			}
 			
@@ -148,7 +150,7 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 			
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			News currentNews = newsManager.getNewsList().get(position);
-
+			/* old implements
 			if (!currentNews.getImages().isEmpty()) {
 
 				String imageUrl = currentNews.getImages().get(0);
@@ -162,7 +164,7 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 	                .cacheOnDisk(true)  
 	                .bitmapConfig(Bitmap.Config.RGB_565)  
 	                .build();
-					String absolutelyImageUrl = "http://192.168.2.231:3000" + imageUrl;
+					String absolutelyImageUrl = NewsConfig.getNetRootPath() + imageUrl;
 					ImageLoader.getInstance().displayImage(absolutelyImageUrl, imageView, options); 
 				} else {
 					convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
@@ -171,7 +173,17 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 			} else {
 				convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
 			}
-			
+			*/
+			List<NewsImage> newsImageList = newsManager.getNewsImage(currentNews.getNewsId());
+			if (newsImageList != null) {
+				byte[] imageBytes = newsImageList.get(0).getImageBytes();
+				Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+				convertView = inflater.inflate(R.layout.new_list_item, null);
+				ImageView imageView = (ImageView)convertView.findViewById(R.id.new_image);
+				imageView.setImageBitmap(bitmap);
+			} else {
+				convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
+			}
 			TextView titleTextView = (TextView)convertView.findViewById(R.id.new_title);
 			titleTextView.setText(currentNews.getTitle());
 			TextView contentTextView = (TextView)convertView.findViewById(R.id.new_content);

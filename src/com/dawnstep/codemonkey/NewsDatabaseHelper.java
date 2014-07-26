@@ -22,7 +22,7 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static NewsDatabaseHelper databaseHelper;
     private static Context appContext;
-    private Map<String, Dao<News, Integer>> daoMaps = null;
+    private Map<String, Dao> daoMaps = null;
     
     static public void setContext(Context context) {
 		appContext = context;
@@ -36,8 +36,9 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	}
 
     private void initDaoMaps() {
-		daoMaps = new HashMap<String, Dao<News, Integer>>();
+		daoMaps = new HashMap<String, Dao>();
 		daoMaps.put("news", null);
+		daoMaps.put("newsImage", null);
 	}
     
 	public NewsDatabaseHelper(Context context, String databaseName,
@@ -55,6 +56,7 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		// TODO Auto-generated method stub
 		try {
 			TableUtils.createTable(connectionSource, News.class);
+			TableUtils.createTable(connectionSource, NewsImage.class);
 		} catch (Exception e) {
 			Log.e(TAG, "create db fail");
 			e.printStackTrace();
@@ -67,6 +69,7 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		// TODO Auto-generated method stub
 		try {
 			TableUtils.dropTable(connectionSource, News.class, true);
+			TableUtils.dropTable(connectionSource, NewsImage.class, true);
 			onCreate(db, connectionSource);
 			Log.i(TAG, "update database success");
 		} catch (java.sql.SQLException e) {
@@ -92,6 +95,18 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 			}
 		}
 		return newsDao;
+	}
+	
+	public Dao<NewsImage, Integer> getNewsImageDao() {
+		Dao<NewsImage, Integer> newsImageDao = daoMaps.get("newsImage");
+		if (newsImageDao == null) {
+			try {
+				newsImageDao = getDao(NewsImage.class);
+			} catch (java.sql.SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return newsImageDao;
 	}
 
 }
