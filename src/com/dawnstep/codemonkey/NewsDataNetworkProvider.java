@@ -118,13 +118,15 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
             		    }
             		});
             		*/
-            		Bitmap bitmap = imageLoader.loadImageSync(imageUrl);
+            		String absolutelyImageUrl = NewsConfig.getNetRootPath() + imageUrl;
+            		Bitmap bitmap = imageLoader.loadImageSync(absolutelyImageUrl);
             		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
     			    byte[] imageBytes =  baos.toByteArray();
     			    newsImage.setImageBytes(imageBytes);
+    			    saveNewsImageToDatabase(newsImage);
     			    newsManager.addNewsImageItem(news.getNewsId(), newsImage);
             	
             	}
