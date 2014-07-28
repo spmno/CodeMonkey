@@ -9,7 +9,7 @@ public class NewsImage {
 	@DatabaseField(dataType = DataType.BYTE_ARRAY)
 	private byte[] imageBytes;
 	@DatabaseField(foreignColumnName="id", foreign=true, foreignAutoRefresh = true, useGetSet=true)
-	private News NewsId;
+	private News newsId;
 	
 	public String getImageURL() {
 		return imageURL;
@@ -24,10 +24,10 @@ public class NewsImage {
 		this.imageBytes = imageBytes;
 	}
 	public News getNewsId() {
-		return NewsId;
+		return newsId;
 	}
 	public void setNewsId(News newsId) {
-		NewsId = newsId;
+		newsId = newsId;
 	}
 
 }

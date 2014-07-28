@@ -90,6 +90,7 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (newsDao == null) {
 			try {
 				newsDao = getDao(News.class);
+				daoMaps.put("news", newsDao);
 			} catch (java.sql.SQLException e) {
 				e.printStackTrace();
 			}
@@ -102,7 +103,10 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (newsImageDao == null) {
 			try {
 				newsImageDao = getDao(NewsImage.class);
+				daoMaps.put("newsImage", newsImageDao);
 			} catch (java.sql.SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

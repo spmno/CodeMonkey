@@ -8,7 +8,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 public class News implements Cloneable {
 	@DatabaseField(canBeNull = false)
-	private String newsId;
+	private int id;
 	@DatabaseField(canBeNull = false)	
 	private String title;
 	@DatabaseField(canBeNull = false)
@@ -36,10 +36,10 @@ public class News implements Cloneable {
 		this.content = content;
 	}
 	public String getNewsId() {
-		return newsId;
+		return String.valueOf(id);
 	}
 	public void setNewsId(String newsId) {
-		this.newsId = newsId;
+		this.id = Integer.valueOf(newsId).intValue();
 	}
 
 	@Override
