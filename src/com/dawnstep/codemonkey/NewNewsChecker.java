@@ -48,13 +48,13 @@ public class NewNewsChecker {
 			News lastNews = newsList.get(0);
 			compareResult = lastNews.getUpdateTime().compareTo(updateDate);
 			if (compareResult < 0) {
-				return true;
+				return false;
 			}
             
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 	
 	public void startCheck() {

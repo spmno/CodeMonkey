@@ -153,12 +153,12 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 		
 		@Override
 		public void run() {
-			NewNewsChecker newNewsChecker = new NewNewsChecker();
-			if (newNewsChecker.isNew()) {
+			//NewNewsChecker newNewsChecker = new NewNewsChecker();
+			//if (newNewsChecker.isNew()) {
 				
-			} else {
+			//} else {
 				getNewsImp();
-			}
+			//}
 		}
 	}
 
