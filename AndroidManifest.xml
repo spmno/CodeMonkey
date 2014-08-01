@@ -7,9 +7,8 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    
-    
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
     </uses-permission>
     <uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>
@@ -20,10 +19,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" >
     </uses-permission>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" >
-    </uses-permission> 
+    </uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
-    </uses-permission> 
-    
+    </uses-permission>
 
     <application
         android:allowBackup="true"
@@ -45,6 +43,11 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name="com.dawnstep.codemonkey.NewsShowActivity"
+            android:label="@string/title_activity_news_show" >
+        </activity>
     </application>
 
 </manifest>

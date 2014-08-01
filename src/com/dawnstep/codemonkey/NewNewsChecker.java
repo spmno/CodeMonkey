@@ -36,7 +36,7 @@ public class NewNewsChecker {
             } 
             JSONObject timeJson = new JSONObject(builder.toString());
             String timeString = timeJson.getString("time");
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         	Date updateDate = formatter.parse(timeString);
             
             NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();

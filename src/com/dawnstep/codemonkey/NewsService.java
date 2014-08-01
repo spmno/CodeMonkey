@@ -1,18 +1,5 @@
 package com.dawnstep.codemonkey;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.dawnstep.codemonkey.ConnectManager.ConnectStatus;
 
@@ -21,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 
 
@@ -36,6 +24,7 @@ public class NewsService extends Service {
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO: Return the communication channel to the service.
+		Log.i(TAG, "onBind");
 		return mNewBinder;
 	}
 	
@@ -92,6 +81,6 @@ public class NewsService extends Service {
 		public void getNews() {
 			currentDataProvider.getNews();
 		}
-				
+
 	}
 }

@@ -19,4 +19,7 @@ public final class NewsConfig {
 		}
 		return "http://115.29.139.76:3000";
 	}
+	static public String getInfoPath() {
+		return getNetRootPath() + "/infos";
+	}
 }

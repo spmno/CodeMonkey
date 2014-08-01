@@ -94,11 +94,18 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
             	saveNewsToDatabase(news);
             	newsManager.addNewsItem(news);
             	
+            	if (imageJsonArray == null) {
+            		continue;
+            	}
+            	
             	int imageJsonArrayLength = imageJsonArray.length();
 
             	for (int j = 0; j < imageJsonArrayLength; j++) {
             		JSONObject imageJsonObject = imageJsonArray.getJSONObject(j);
             		String imageUrl = imageJsonObject.getString("photo");
+            		if ((imageUrl == null) || (imageUrl.equals("null"))) {
+            			continue;
+            		}
             		final NewsImage newsImage = new NewsImage();
             		newsImage.setImageURL(imageUrl);
             		newsImage.setNewsId(news);

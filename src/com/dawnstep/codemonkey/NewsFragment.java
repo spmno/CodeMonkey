@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,14 +32,15 @@ import android.widget.TextView;
 import android.graphics.Bitmap; 
 import android.graphics.BitmapFactory;
 
-public class NewsFragment extends Fragment implements OnScrollListener {
+public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener {
 	
 	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
 	private NewsService.NewsBinder mNewBinder;
 	private NewsServiceConnection mNewsConnection;
 	private NewsHandler newsHandler;
-	List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
+	//ability of save data moves to newsnanager
+	//List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
 	private NewsDataAdapter adapter;
 	private View moreView; //加载更多页面
 	private int lastItem;
@@ -57,8 +60,11 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 		newsListView.addFooterView(moreView);
 		newsListView.setAdapter(adapter);
 		newsListView.setOnScrollListener(NewsFragment.this);
+		newsListView.setOnItemClickListener(this);
 		return rootView;
 	}
+	
+	
 	
 	public class NewsServiceConnection implements ServiceConnection, NewsDataListener {
 
@@ -88,6 +94,7 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 	class NewsHandler extends Handler {
 		@Override
 		public void handleMessage(Message message) {
+			/*
 			NewsManager newsManager = NewsManager.getInstance();
 			
 			List<News> orignalList = newsManager.getNewsList();
@@ -97,10 +104,13 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 	        	Map<String, Object> newsMap = new HashMap<String, Object>();
 	        	newsMap.put("title", news.getTitle());
 	        	newsMap.put("content", news.getContent());
-	        	newsMap.put("images", newsImageList.get(0).getImageBytes());
+	        	if (newsImageList != null) {
+	        		newsMap.put("images", newsImageList.get(0).getImageBytes());
+	        	}
+	        	
 	        	newsList.add(newsMap);
 			}
-			
+			*/
 			adapter.notifyDataSetChanged();
             moreView.setVisibility(View.GONE); 
 		}
@@ -192,5 +202,17 @@ public class NewsFragment extends Fragment implements OnScrollListener {
 			return convertView;
 		}
 		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(getActivity(), NewsShowActivity.class);
+		Bundle bundle = new Bundle(); 
+		NewsManager newsManager = NewsManager.getInstance();
+		News currentNews = newsManager.getNewsList().get(position);
+		bundle.putString("newsId", currentNews.getNewsId());
+		intent.putExtras(bundle);
+		getActivity().startActivity(intent);
 	}
 }
