@@ -52,6 +52,19 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 		}
 	}
 	
+	private boolean isExist(Integer newsId) {
+		NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
+		Dao<News, Integer> newsDao = newsDatabaseHelper.getNewsDao();
+		try {
+			if (newsDao.queryForId(newsId) != null) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 	public void getNewsImp() {
 		NewsManager newsManager = NewsManager.getInstance();
 		//String urlPath = "http://192.168.2.231:3000/infos.json";
@@ -77,8 +90,10 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
             int listLength = jsonArray.length();
             for (int i = 0; i < listLength; ++i) {
             	JSONObject jsonObject = jsonArray.getJSONObject(i);  
-            	News news = new News();
+            	//check is exist in db
             	String newsId = jsonObject.getString("id");
+            	boolean saveFlag = isExist(Integer.valueOf(newsId));
+                  	
             	String title = jsonObject.getString("title");
             	String content = jsonObject.getString("content");
             	String dateString = jsonObject.getString("updated_at");
@@ -86,12 +101,15 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 
             	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             	Date updateDate = formatter.parse(dateString);
+            	News news = new News();
             	news.setNewsId(newsId);
             	news.setTitle(title);
             	news.setContent(content);
             	news.setUpdateTime(updateDate);
             	
-            	saveNewsToDatabase(news);
+            	if (!saveFlag)
+            		saveNewsToDatabase(news);
+            	
             	newsManager.addNewsItem(news);
             	
             	if (imageJsonArray == null) {
@@ -133,7 +151,10 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 
     			    byte[] imageBytes =  baos.toByteArray();
     			    newsImage.setImageBytes(imageBytes);
-    			    saveNewsImageToDatabase(newsImage);
+    			    
+    			    if (!saveFlag)
+    			    	saveNewsImageToDatabase(newsImage);
+    			    
     			    newsManager.addNewsImageItem(news.getNewsId(), newsImage);
             	
             	}

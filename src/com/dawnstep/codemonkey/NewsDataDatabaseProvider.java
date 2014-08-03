@@ -23,6 +23,7 @@ public class NewsDataDatabaseProvider extends NewsDataProvider {
 			NewsManager newsManager = NewsManager.getInstance();
 			NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
 			Dao<News, Integer> newsDao = newsDatabaseHelper.getNewsDao();
+			Dao<NewsImage, Integer> newsImageDao = newsDatabaseHelper.getNewsImageDao();
 			QueryBuilder<News, Integer> queryBuilder = newsDao.queryBuilder();
 			long startRow = newsManager.getOffset();
 			long maxLimit = 10;
@@ -32,6 +33,11 @@ public class NewsDataDatabaseProvider extends NewsDataProvider {
 			    List<News> newsList = newsDao.query(preparedQuery);  
 			    for (News news : newsList) {
 			    	newsManager.addNewsItem(news);
+			    	String newsId = news.getNewsId();
+			    	List<NewsImage> newsImageList = newsImageDao.queryForEq("newsId_id", newsId);
+			    	for (NewsImage newsImage : newsImageList) {
+			    		newsManager.addNewsImageItem(newsId, newsImage);
+			    	}
 			    }
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

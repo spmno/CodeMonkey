@@ -27,7 +27,7 @@ public class NewsImage {
 		return newsId;
 	}
 	public void setNewsId(News newsId) {
-		newsId = newsId;
+		this.newsId = newsId;
 	}
 
 }

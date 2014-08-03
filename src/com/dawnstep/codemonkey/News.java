@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 
 public class News implements Cloneable {
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, id = true)
 	private int id;
 	@DatabaseField(canBeNull = false)	
 	private String title;
