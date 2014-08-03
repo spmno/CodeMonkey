@@ -64,7 +64,10 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		return rootView;
 	}
 	
-	
+	public void onDestroyView() {
+		super.onDestroyView();
+		getActivity().unbindService(mNewsConnection);
+	}
 	
 	public class NewsServiceConnection implements ServiceConnection, NewsDataListener {
 

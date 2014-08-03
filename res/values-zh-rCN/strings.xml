@@ -6,4 +6,5 @@
     <string name="title_section3">动物园</string>
     <string name="action_settings">设置</string>
     <string name="action_info">我的信息</string>
+    <string name="title_activity_news_show">猿新闻</string>
 </resources>

@@ -7,7 +7,6 @@
     <string name="title_section3">Zoo</string>
     <string name="action_settings">Settings</string>
     <string name="action_info">MyInfo</string>
-    <string name="title_activity_news_show">NewsShowActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_news_show">News</string>
 
 </resources>
