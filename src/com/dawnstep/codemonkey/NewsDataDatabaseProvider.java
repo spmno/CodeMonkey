@@ -28,7 +28,7 @@ public class NewsDataDatabaseProvider extends NewsDataProvider {
 			long startRow = newsManager.getOffset();
 			long maxLimit = 10;
 			try {
-				queryBuilder.orderBy("updateTime", true).offset(startRow).limit(maxLimit);
+				queryBuilder.orderBy("updateTime", false).offset(startRow).limit(maxLimit);
 				PreparedQuery<News> preparedQuery = queryBuilder.prepare();  
 			    List<News> newsList = newsDao.query(preparedQuery);  
 			    for (News news : newsList) {

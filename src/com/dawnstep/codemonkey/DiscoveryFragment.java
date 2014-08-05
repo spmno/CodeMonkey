@@ -33,6 +33,7 @@ public class DiscoveryFragment extends Fragment {
 	
 	public List<String> getDiscoveries() {
 		List<String> data = new ArrayList<String>();
+		data.add("新技能get");
         data.add("找女神");
         data.add("找设计");
         data.add("近期活动");
