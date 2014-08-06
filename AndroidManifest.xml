@@ -48,6 +48,10 @@
             android:name="com.dawnstep.codemonkey.NewsShowActivity"
             android:label="@string/title_activity_news_show" >
         </activity>
+        <activity
+            android:name="com.dawnstep.codemonkey.ContactUsActivity"
+            android:label="@string/title_activity_contact_us" >
+        </activity>
     </application>
 
 </manifest>

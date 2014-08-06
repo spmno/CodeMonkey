@@ -7,4 +7,8 @@
     <string name="action_settings">设置</string>
     <string name="action_info">我的信息</string>
     <string name="title_activity_news_show">猿新闻</string>
+    <string name="title_activity_contact_us">联系我们</string>
+    <string name="contact_us">联系方式：</string>
+    <string name="qq">qq:1198234856</string>
+    <string name="hotmail">mail:sunqingpeng@hotmail.com</string>
 </resources>

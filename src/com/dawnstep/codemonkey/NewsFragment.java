@@ -97,23 +97,6 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 	class NewsHandler extends Handler {
 		@Override
 		public void handleMessage(Message message) {
-			/*
-			NewsManager newsManager = NewsManager.getInstance();
-			
-			List<News> orignalList = newsManager.getNewsList();
-			
-			for (News news : orignalList) {
-				List<NewsImage> newsImageList = newsManager.getNewsImage(news.getNewsId());
-	        	Map<String, Object> newsMap = new HashMap<String, Object>();
-	        	newsMap.put("title", news.getTitle());
-	        	newsMap.put("content", news.getContent());
-	        	if (newsImageList != null) {
-	        		newsMap.put("images", newsImageList.get(0).getImageBytes());
-	        	}
-	        	
-	        	newsList.add(newsMap);
-			}
-			*/
 			adapter.notifyDataSetChanged();
             moreView.setVisibility(View.GONE); 
 		}
@@ -163,30 +146,6 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 			
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			News currentNews = newsManager.getNewsList().get(position);
-			/* old implements
-			if (!currentNews.getImages().isEmpty()) {
-
-				String imageUrl = currentNews.getImages().get(0);
-				if ((!imageUrl.isEmpty()) && (!imageUrl.equals("null"))) {
-					convertView = inflater.inflate(R.layout.new_list_item, null);
-					ImageView imageView = (ImageView)convertView.findViewById(R.id.new_image);
-					DisplayImageOptions options = new DisplayImageOptions.Builder()  
-	                .showImageOnLoading(R.drawable.ic_launcher)  
-	                .showImageOnFail(R.drawable.ic_launcher)  
-	                .cacheInMemory(true)  
-	                .cacheOnDisk(true)  
-	                .bitmapConfig(Bitmap.Config.RGB_565)  
-	                .build();
-					String absolutelyImageUrl = NewsConfig.getNetRootPath() + imageUrl;
-					ImageLoader.getInstance().displayImage(absolutelyImageUrl, imageView, options); 
-				} else {
-					convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
-				}
-	 
-			} else {
-				convertView = inflater.inflate(R.layout.news_list_item_no_image, null);
-			}
-			*/
 			List<NewsImage> newsImageList = newsManager.getNewsImage(currentNews.getNewsId());
 			if (newsImageList != null) {
 				byte[] imageBytes = newsImageList.get(0).getImageBytes();
