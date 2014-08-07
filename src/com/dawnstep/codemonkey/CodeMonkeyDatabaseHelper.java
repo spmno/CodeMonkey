@@ -39,6 +39,9 @@ public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		daoMaps = new HashMap<String, Dao>();
 		daoMaps.put("news", null);
 		daoMaps.put("newsImage", null);
+		daoMaps.put("newsSkillGetKind", null);
+		daoMaps.put("newSkillGet", null);
+		
 	}
     
 	public CodeMonkeyDatabaseHelper(Context context, String databaseName,
@@ -57,6 +60,8 @@ public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		try {
 			TableUtils.createTable(connectionSource, News.class);
 			TableUtils.createTable(connectionSource, NewsImage.class);
+			TableUtils.createTable(connectionSource, NewSkillGet.class);
+			TableUtils.createTable(connectionSource, NewSkillGetKind.class);
 		} catch (Exception e) {
 			Log.e(TAG, "create db fail");
 			e.printStackTrace();
@@ -70,6 +75,8 @@ public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		try {
 			TableUtils.dropTable(connectionSource, News.class, true);
 			TableUtils.dropTable(connectionSource, NewsImage.class, true);
+			TableUtils.dropTable(connectionSource, NewSkillGet.class, true);
+			TableUtils.dropTable(connectionSource, NewSkillGetKind.class, true);
 			onCreate(db, connectionSource);
 			Log.i(TAG, "update database success");
 		} catch (java.sql.SQLException e) {
@@ -113,4 +120,33 @@ public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return newsImageDao;
 	}
 
+	public Dao<NewSkillGet, Integer> getNewSkillGetDao() {
+		Dao<NewSkillGet, Integer> newSkillGetDao = daoMaps.get("newSkillGet");
+		if (newSkillGetDao == null) {
+			try {
+				newSkillGetDao = getDao(NewSkillGet.class);
+				daoMaps.put("newsImage", newSkillGetDao);
+			} catch (java.sql.SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return newSkillGetDao;
+	}
+	
+	public Dao<NewSkillGetKind, Integer> getNewSkillGetKindDao() {
+		Dao<NewSkillGetKind, Integer> newSkillGetSkillDao = daoMaps.get("newSkillGetKind");
+		if (newSkillGetSkillDao == null) {
+			try {
+				newSkillGetSkillDao = getDao(NewSkillGetKind.class);
+				daoMaps.put("newSkillGetKind", newSkillGetSkillDao);
+			} catch (java.sql.SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return newSkillGetSkillDao;
+	}
 }
