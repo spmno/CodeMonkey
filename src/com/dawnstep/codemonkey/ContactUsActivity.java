@@ -8,14 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
-public class NewsShowActivity extends Activity {
+public class ContactUsActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_news_show);
+		setContentView(R.layout.activity_contact_us);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -27,7 +26,7 @@ public class NewsShowActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.news_show, menu);
+		getMenuInflater().inflate(R.menu.contact_us, menu);
 		return true;
 	}
 
@@ -51,20 +50,14 @@ public class NewsShowActivity extends Activity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
-		private WebView webView;
 		public PlaceholderFragment() {
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_news_show,
+			View rootView = inflater.inflate(R.layout.fragment_contact_us,
 					container, false);
-			Bundle bundle = getActivity().getIntent().getExtras();
-			String newsId = bundle.getString("newsId");
-			String newsUrl = NewsConfig.getInfoPath() + "/" + newsId;
-			webView = (WebView)rootView.findViewById(R.id.webview);
-			webView.loadUrl(newsUrl);
 			return rootView;
 		}
 	}

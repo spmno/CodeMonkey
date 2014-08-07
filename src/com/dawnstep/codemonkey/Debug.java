@@ -1,5 +1,5 @@
 package com.dawnstep.codemonkey;
 
 public interface Debug {
-	public final boolean ENABLE = false;   
+	public final boolean ENABLE = true;   
 }

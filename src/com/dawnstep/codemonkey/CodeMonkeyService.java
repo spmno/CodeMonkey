@@ -12,13 +12,13 @@ import android.util.Log;
 
 
 
-public class NewsService extends Service {
+public class CodeMonkeyService extends Service {
 	
-    private static final String TAG = "NewsService"; 
-    private NewsBinder mNewBinder = new NewsBinder();
+    private static final String TAG = "CodeMonkeyService"; 
+    private CodeMonkeyBinder mNewBinder = new CodeMonkeyBinder();
     private NewsDataProvider currentDataProvider;
     private Context appContext;
-	public NewsService() {
+	public CodeMonkeyService() {
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class NewsService extends Service {
 					NewsDataProviderFactory.getInstance().
 					createNewsDataProvider(NewsDataProviderFactory.ProviderType.NetProvider);
 		}
-		NewsDatabaseHelper.setContext(appContext);
+		CodeMonkeyDatabaseHelper.setContext(appContext);
 
 	}
 	
@@ -58,7 +58,7 @@ public class NewsService extends Service {
 	
 
 	
-	public class NewsBinder extends Binder {
+	public class CodeMonkeyBinder extends Binder {
 		/* only for the test
 		public List<Map<String, Object>> getNews() {
 			List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();

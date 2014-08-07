@@ -13,14 +13,14 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
+public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	
 	private static final String TAG = "NewsDatabaseHelper";
     // 数据库名称
     private static final String DATABASE_NAME = "news.db";
     // 数据库version
     private static final int DATABASE_VERSION = 1;
-    private static NewsDatabaseHelper databaseHelper;
+    private static CodeMonkeyDatabaseHelper databaseHelper;
     private static Context appContext;
     private Map<String, Dao> daoMaps = null;
     
@@ -28,9 +28,9 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		appContext = context;
 	}
     
-    public static synchronized NewsDatabaseHelper getInstance(){
+    public static synchronized CodeMonkeyDatabaseHelper getInstance(){
 		if (databaseHelper == null) {
-			databaseHelper = new NewsDatabaseHelper(appContext);
+			databaseHelper = new CodeMonkeyDatabaseHelper(appContext);
 		}
 		return databaseHelper;           
 	}
@@ -41,13 +41,13 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
 		daoMaps.put("newsImage", null);
 	}
     
-	public NewsDatabaseHelper(Context context, String databaseName,
+	public CodeMonkeyDatabaseHelper(Context context, String databaseName,
 			CursorFactory factory, int databaseVersion) {
 		super(context, databaseName, factory, databaseVersion);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public NewsDatabaseHelper(Context context)    {
+	public CodeMonkeyDatabaseHelper(Context context)    {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         initDaoMaps();
 	}

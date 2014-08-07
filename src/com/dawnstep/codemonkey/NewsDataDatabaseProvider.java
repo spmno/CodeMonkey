@@ -21,7 +21,7 @@ public class NewsDataDatabaseProvider extends NewsDataProvider {
 		@Override
 		public void run() {
 			NewsManager newsManager = NewsManager.getInstance();
-			NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
+			CodeMonkeyDatabaseHelper newsDatabaseHelper = CodeMonkeyDatabaseHelper.getInstance();
 			Dao<News, Integer> newsDao = newsDatabaseHelper.getNewsDao();
 			Dao<NewsImage, Integer> newsImageDao = newsDatabaseHelper.getNewsImageDao();
 			QueryBuilder<News, Integer> queryBuilder = newsDao.queryBuilder();

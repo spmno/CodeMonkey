@@ -12,6 +12,7 @@
     <string name="contact_us">Contact Us:</string>
     <string name="qq">qq:1198234856</string>
     <string name="hotmail">mail:sunqingpeng@hotmail.com</string>
-    
+    <string name="title_activity_new_skill_get_kind">NewSkillGetKindActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

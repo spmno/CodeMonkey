@@ -5,9 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,11 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
-import android.view.View;
 
 import com.j256.ormlite.dao.Dao;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 public class NewsDataNetworkProvider extends NewsDataProvider {
 
@@ -33,7 +30,7 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 	}
 	
 	public void saveNewsToDatabase(News news) {
-		NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
+		CodeMonkeyDatabaseHelper newsDatabaseHelper = CodeMonkeyDatabaseHelper.getInstance();
 		Dao<News, Integer> newsDao = newsDatabaseHelper.getNewsDao();
 		try {
 			newsDao.create(news);
@@ -43,7 +40,7 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 	}
 	
 	public void saveNewsImageToDatabase(NewsImage image) {
-		NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
+		CodeMonkeyDatabaseHelper newsDatabaseHelper = CodeMonkeyDatabaseHelper.getInstance();
 		Dao<NewsImage, Integer> newsImageDao = newsDatabaseHelper.getNewsImageDao();
 		try {
 			newsImageDao.create(image);
@@ -53,7 +50,7 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
 	}
 	
 	private boolean isExist(Integer newsId) {
-		NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
+		CodeMonkeyDatabaseHelper newsDatabaseHelper = CodeMonkeyDatabaseHelper.getInstance();
 		Dao<News, Integer> newsDao = newsDatabaseHelper.getNewsDao();
 		try {
 			if (newsDao.queryForId(newsId) != null) {
@@ -99,7 +96,7 @@ public class NewsDataNetworkProvider extends NewsDataProvider {
             	String dateString = jsonObject.getString("updated_at");
             	JSONArray imageJsonArray = jsonObject.getJSONArray("images");
 
-            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
             	Date updateDate = formatter.parse(dateString);
             	News news = new News();
             	news.setNewsId(newsId);

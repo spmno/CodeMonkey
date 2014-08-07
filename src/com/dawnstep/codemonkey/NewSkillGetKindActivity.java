@@ -1,5 +1,8 @@
 package com.dawnstep.codemonkey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,15 +11,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-public class NewsShowActivity extends Activity {
+
+public class NewSkillGetKindActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_news_show);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		setContentView(R.layout.activity_new_skill_get_kind);
+
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -27,7 +32,7 @@ public class NewsShowActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.news_show, menu);
+		getMenuInflater().inflate(R.menu.new_skill_get_kind, menu);
 		return true;
 	}
 
@@ -39,9 +44,6 @@ public class NewsShowActivity extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
-		} else if (id == android.R.id.home) {
-			finish();
-			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -50,22 +52,30 @@ public class NewsShowActivity extends Activity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-
-		private WebView webView;
+		private ListView newSkillGetListView;
+		
 		public PlaceholderFragment() {
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_news_show,
-					container, false);
-			Bundle bundle = getActivity().getIntent().getExtras();
-			String newsId = bundle.getString("newsId");
-			String newsUrl = NewsConfig.getInfoPath() + "/" + newsId;
-			webView = (WebView)rootView.findViewById(R.id.webview);
-			webView.loadUrl(newsUrl);
+			View rootView = inflater.inflate(
+					R.layout.fragment_new_skill_get_kind, container, false);
+			newSkillGetListView = (ListView)rootView.findViewById(R.id.newsListView);
+			newSkillGetListView.setAdapter(new ArrayAdapter<String>(getActivity(), 
+					android.R.layout.simple_expandable_list_item_1, 
+					getNewSkillGetKind()));
 			return rootView;
+		}
+		
+		public List<String> getNewSkillGetKind() {
+			List<String> data = new ArrayList<String>();
+			data.add("新技能get");
+	        data.add("找女神");
+	        data.add("找设计");
+	        data.add("近期活动");
+	        return data;
 		}
 	}
 

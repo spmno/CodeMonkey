@@ -6,12 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.j256.ormlite.dao.Dao;
@@ -36,10 +36,10 @@ public class NewNewsChecker {
             } 
             JSONObject timeJson = new JSONObject(builder.toString());
             String timeString = timeJson.getString("time");
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
         	Date updateDate = formatter.parse(timeString);
             
-            NewsDatabaseHelper newsDatabaseHelper = NewsDatabaseHelper.getInstance();
+            CodeMonkeyDatabaseHelper newsDatabaseHelper = CodeMonkeyDatabaseHelper.getInstance();
 			Dao<News, Integer> newsDao = newsDatabaseHelper.getNewsDao();
 			QueryBuilder<News, Integer> queryBuilder = newsDao.queryBuilder();
 			queryBuilder.orderBy("updateTime", false).limit(1L);

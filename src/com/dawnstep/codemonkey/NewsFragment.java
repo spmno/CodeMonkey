@@ -1,12 +1,8 @@
 package com.dawnstep.codemonkey;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.ref.WeakReference;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import java.util.List;
 
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -36,7 +32,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 	
 	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
-	private NewsService.NewsBinder mNewBinder;
+	private CodeMonkeyService.CodeMonkeyBinder newBinder;
 	private NewsServiceConnection mNewsConnection;
 	private NewsHandler newsHandler;
 	//ability of save data moves to newsnanager
@@ -51,10 +47,11 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 				false);
 		newsListView = (ListView)rootView.findViewById(R.id.newsListView);
 		
-		Intent intent = new Intent(getActivity(), NewsService.class);
+		Intent intent = new Intent(getActivity(), CodeMonkeyService.class);
 		mNewsConnection = new NewsServiceConnection();
 		getActivity().bindService(intent, mNewsConnection, Context.BIND_AUTO_CREATE);
-		newsHandler = new NewsHandler();
+		newsHandler = new NewsHandler(this);
+
 		moreView = getActivity().getLayoutInflater().inflate(R.layout.load, null);
 		adapter = new NewsDataAdapter();
 		newsListView.addFooterView(moreView);
@@ -74,9 +71,9 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			// TODO Auto-generated method stub
-			mNewBinder = (NewsService.NewsBinder)binder;
-			mNewBinder.addDataArrivedListener(this);
-			mNewBinder.getNews();
+			newBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
+			newBinder.addDataArrivedListener(this);
+			newBinder.getNews();
 			//List<Map<String, Object>> newsList = mNewBinder.getNews();
 
 		}
@@ -94,11 +91,16 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		
 	}
 	
-	class NewsHandler extends Handler {
+	static class NewsHandler extends Handler {
+		private WeakReference<NewsFragment> fragment;
+		NewsHandler(NewsFragment fragment) {
+			this.fragment = new WeakReference<NewsFragment>(fragment);
+		}
 		@Override
 		public void handleMessage(Message message) {
-			adapter.notifyDataSetChanged();
-            moreView.setVisibility(View.GONE); 
+			NewsFragment parentFragment = fragment.get();
+			parentFragment.adapter.notifyDataSetChanged();
+			parentFragment.moreView.setVisibility(View.GONE); 
 		}
 	}
 
@@ -112,11 +114,11 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 		int count = NewsManager.getInstance().getOffset();
-		if(lastItem == count  && scrollState == this.SCROLL_STATE_IDLE){ 
+		if(lastItem == count  && scrollState == NewsFragment.SCROLL_STATE_IDLE){ 
 			Log.i(TAG, "拉到最底部");
-            moreView.setVisibility(view.VISIBLE);
+            moreView.setVisibility(AbsListView.VISIBLE);
 		}  
-		mNewBinder.getNews();
+		newBinder.getNews();
     }
 
 	class NewsDataAdapter extends BaseAdapter {
