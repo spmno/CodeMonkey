@@ -16,7 +16,7 @@ public class CodeMonkeyService extends Service {
 	
     private static final String TAG = "CodeMonkeyService"; 
     private CodeMonkeyBinder mNewBinder = new CodeMonkeyBinder();
-    private NewsDataProvider currentDataProvider;
+    private CodeMonkeyDataProvider currentDataProvider;
     private Context appContext;
 	public CodeMonkeyService() {
 	}

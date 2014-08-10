@@ -15,12 +15,12 @@ public class NewsDataProviderFactory {
 		return newsDataProviderFactory;
 	}
 	
-	public NewsDataProvider createNewsDataProvider(ProviderType type) {
+	public CodeMonkeyDataProvider createNewsDataProvider(ProviderType type) {
 		switch(type) {
 		case NetProvider:
-			return new NewsDataNetworkProvider();
+			return new CodeMonkeyNetworkProvider();
 		case DatabaseProvider:
-			return new NewsDataDatabaseProvider();
+			return new CodeMonkeyDatabaseProvider();
 		default:
 			return null;
 		}

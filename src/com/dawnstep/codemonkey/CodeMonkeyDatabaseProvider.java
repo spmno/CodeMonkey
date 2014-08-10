@@ -7,7 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
-public class NewsDataDatabaseProvider extends NewsDataProvider {
+public class CodeMonkeyDatabaseProvider extends CodeMonkeyDataProvider {
 
 	@Override
 	public void getNews() {

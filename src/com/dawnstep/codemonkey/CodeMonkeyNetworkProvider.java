@@ -20,7 +20,7 @@ import android.graphics.Bitmap;
 import com.j256.ormlite.dao.Dao;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class NewsDataNetworkProvider extends NewsDataProvider {
+public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 
 	@Override
 	public void getNews() {
