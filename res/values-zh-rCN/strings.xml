@@ -11,4 +11,6 @@
     <string name="contact_us">联系方式：</string>
     <string name="qq">qq:1198234856</string>
     <string name="hotmail">mail:sunqingpeng@hotmail.com</string>
+    <string name="downloading_title">下载中.</string>
+    <string name="downloading_text">下载中，请等待.</string>
 </resources>

@@ -1,10 +1,11 @@
 package com.dawnstep.codemonkey;
 
 import java.lang.ref.WeakReference;
-
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -35,11 +36,11 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 	private CodeMonkeyService.CodeMonkeyBinder newBinder;
 	private NewsServiceConnection mNewsConnection;
 	private NewsHandler newsHandler;
-	//ability of save data moves to newsnanager
-	//List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
 	private NewsDataAdapter adapter;
 	private View moreView; //加载更多页面
 	private int lastItem;
+	private ProgressDialog progressDialog;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -73,6 +74,15 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 			// TODO Auto-generated method stub
 			newBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
 			newBinder.addDataArrivedListener(this);
+			Activity parentActivity = NewsFragment.this.getActivity();
+			progressDialog = new ProgressDialog(parentActivity);
+			String title = parentActivity.getResources().getString(R.string.downloading_title);
+			String text = parentActivity.getResources().getString(R.string.downloading_text);
+			progressDialog.setTitle(title);
+			progressDialog.setMessage(text);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+			
 			newBinder.getNews();
 			//List<Map<String, Object>> newsList = mNewBinder.getNews();
 
@@ -87,6 +97,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		@Override
 		public void dataArrived() {
 			newsHandler.sendEmptyMessage(0);
+			progressDialog.dismiss();
 		}
 		
 	}
