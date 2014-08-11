@@ -34,7 +34,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
 	private CodeMonkeyService.CodeMonkeyBinder newBinder;
-	private NewsServiceConnection mNewsConnection;
+	private NewsServiceConnection newsConnection;
 	private NewsHandler newsHandler;
 	private NewsDataAdapter adapter;
 	private View moreView; //加载更多页面
@@ -49,8 +49,8 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		newsListView = (ListView)rootView.findViewById(R.id.newsListView);
 		
 		Intent intent = new Intent(getActivity(), CodeMonkeyService.class);
-		mNewsConnection = new NewsServiceConnection();
-		getActivity().bindService(intent, mNewsConnection, Context.BIND_AUTO_CREATE);
+		newsConnection = new NewsServiceConnection();
+		getActivity().bindService(intent, newsConnection, Context.BIND_AUTO_CREATE);
 		newsHandler = new NewsHandler(this);
 
 		moreView = getActivity().getLayoutInflater().inflate(R.layout.load, null);
@@ -64,7 +64,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 	
 	public void onDestroyView() {
 		super.onDestroyView();
-		getActivity().unbindService(mNewsConnection);
+		getActivity().unbindService(newsConnection);
 	}
 	
 	public class NewsServiceConnection implements ServiceConnection, NewsDataListener {
@@ -84,8 +84,6 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 			progressDialog.show();
 			
 			newBinder.getNews();
-			//List<Map<String, Object>> newsList = mNewBinder.getNews();
-
 		}
 
 		@Override

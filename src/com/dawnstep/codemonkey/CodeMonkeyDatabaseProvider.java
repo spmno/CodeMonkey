@@ -49,4 +49,10 @@ public class CodeMonkeyDatabaseProvider extends CodeMonkeyDataProvider {
 			}
 		}
 	}
+
+	@Override
+	public void getNewSkillGets() {
+		// TODO Auto-generated method stub
+		
+	}
 }

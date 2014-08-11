@@ -171,13 +171,14 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 		
 		@Override
 		public void run() {
-			//NewNewsChecker newNewsChecker = new NewNewsChecker();
-			//if (newNewsChecker.isNew()) {
-				
-			//} else {
-				getNewsImp();
-			//}
+			getNewsImp();
 		}
+	}
+
+	@Override
+	public void getNewSkillGets() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

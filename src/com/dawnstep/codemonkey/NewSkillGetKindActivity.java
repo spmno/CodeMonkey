@@ -77,6 +77,8 @@ public class NewSkillGetKindActivity extends Activity {
 	        data.add("近期活动");
 	        return data;
 		}
+		
+		
 	}
 
 }

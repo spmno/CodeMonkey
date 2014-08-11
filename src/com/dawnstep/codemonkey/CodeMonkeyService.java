@@ -15,23 +15,13 @@ import android.util.Log;
 public class CodeMonkeyService extends Service {
 	
     private static final String TAG = "CodeMonkeyService"; 
-    private CodeMonkeyBinder mNewBinder = new CodeMonkeyBinder();
+    private CodeMonkeyBinder newBinder = new CodeMonkeyBinder();
     private CodeMonkeyDataProvider currentDataProvider;
     private Context appContext;
 	public CodeMonkeyService() {
 	}
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO: Return the communication channel to the service.
-		Log.i(TAG, "onBind");
-		return mNewBinder;
-	}
-	
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		appContext = getApplicationContext();
+	private void updateProvider() {
 		ConnectManager connectManager = new ConnectManager();
 		if (connectManager.getNetStatus(appContext) == ConnectStatus.NONE_CONNECTED) {
 			currentDataProvider = 
@@ -42,6 +32,19 @@ public class CodeMonkeyService extends Service {
 					NewsDataProviderFactory.getInstance().
 					createNewsDataProvider(NewsDataProviderFactory.ProviderType.NetProvider);
 		}
+	}
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO: Return the communication channel to the service.
+		Log.i(TAG, "onBind");
+		return newBinder;
+	}
+	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		appContext = getApplicationContext();
+		updateProvider();
 		CodeMonkeyDatabaseHelper.setContext(appContext);
 
 	}
@@ -59,27 +62,18 @@ public class CodeMonkeyService extends Service {
 
 	
 	public class CodeMonkeyBinder extends Binder {
-		/* only for the test
-		public List<Map<String, Object>> getNews() {
-			List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-	        Map<String, Object> map = new HashMap<String, Object>();
-	        map.put("content", "test1");
-	        
-	        data.add(map);
-	        
-	        map.put("content", "test2");
-	        
-	        data.add(map);
-	         
-	        return data;
-		}
-		*/
+
 		public void addDataArrivedListener(NewsDataListener listener) {
 			currentDataProvider.add(listener);
 		}
 		
 		public void getNews() {
+			updateProvider();
 			currentDataProvider.getNews();
+		}
+		
+		public void getNewSkillGets() {
+			currentDataProvider.getNewSkillGets();
 		}
 
 	}
