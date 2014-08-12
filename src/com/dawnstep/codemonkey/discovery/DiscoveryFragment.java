@@ -1,7 +1,9 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.discovery;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dawnstep.codemonkey.R;
 
 import android.app.Fragment;
 import android.os.Bundle;

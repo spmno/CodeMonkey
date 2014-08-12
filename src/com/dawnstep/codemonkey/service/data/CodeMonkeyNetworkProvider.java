@@ -1,4 +1,4 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service.data;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -17,6 +17,10 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 
+import com.dawnstep.codemonkey.service.data.database.News;
+import com.dawnstep.codemonkey.service.data.database.NewsImage;
+import com.dawnstep.codemonkey.news.NewsManager;
+import com.dawnstep.codemonkey.utils.CodeMonkeyConfig;
 import com.j256.ormlite.dao.Dao;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -65,7 +69,7 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 	public void getNewsImp() {
 		NewsManager newsManager = NewsManager.getInstance();
 		//String urlPath = "http://192.168.2.231:3000/infos.json";
-		String urlPath = NewsConfig.getNewsNetPath();//"http://115.29.139.76:3000/infos.json";
+		String urlPath = CodeMonkeyConfig.getNewsNetPath();//"http://115.29.139.76:3000/infos.json";
 		int offset = newsManager.getOffset();
 		String urlPathWithParam = urlPath 
 				+ "?"
@@ -140,7 +144,7 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
             		    }
             		});
             		*/
-            		String absolutelyImageUrl = NewsConfig.getNetRootPath() + imageUrl;
+            		String absolutelyImageUrl = CodeMonkeyConfig.getNetRootPath() + imageUrl;
             		Bitmap bitmap = imageLoader.loadImageSync(absolutelyImageUrl);
             		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 

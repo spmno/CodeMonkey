@@ -1,9 +1,12 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.news;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.dawnstep.codemonkey.service.data.database.News;
+import com.dawnstep.codemonkey.service.data.database.NewsImage;
 
 public class NewsManager {
 	private NewsManager(){}

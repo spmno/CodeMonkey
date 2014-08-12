@@ -1,7 +1,14 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.news;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import com.dawnstep.codemonkey.R;
+import com.dawnstep.codemonkey.service.data.NewsDataListener;
+import com.dawnstep.codemonkey.service.data.database.News;
+import com.dawnstep.codemonkey.service.data.database.NewsImage;
+import com.dawnstep.codemonkey.service.CodeMonkeyService;
+
 
 import android.app.Activity;
 import android.app.Fragment;

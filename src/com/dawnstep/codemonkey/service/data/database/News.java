@@ -1,4 +1,4 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service.data.database;
 
 import java.util.Date;
 

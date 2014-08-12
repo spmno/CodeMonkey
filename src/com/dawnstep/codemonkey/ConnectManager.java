@@ -6,14 +6,14 @@ import android.net.NetworkInfo;
 
 public class ConnectManager {
 	
-	enum ConnectStatus {
+	public enum ConnectStatus {
 		PHONE_CONNECTED,
 		WIFI_CONNECTED,
 		PHONE_AND_WIFI_CONNECTED,
 		NONE_CONNECTED,
 	}
 	
-	ConnectStatus getNetStatus(Context context) {
+	public ConnectStatus getNetStatus(Context context) {
 		ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeInfo = connectivityManager.getActiveNetworkInfo();
 		if (activeInfo != null && activeInfo.isConnected()) {

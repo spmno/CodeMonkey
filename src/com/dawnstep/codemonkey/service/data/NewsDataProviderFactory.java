@@ -1,8 +1,10 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service.data;
+
+
 
 public class NewsDataProviderFactory {
 	
-	enum ProviderType {
+	public enum ProviderType {
 		NetProvider,
 		DatabaseProvider,
 	}

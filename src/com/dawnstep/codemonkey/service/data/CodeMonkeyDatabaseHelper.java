@@ -1,4 +1,4 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service.data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
+import com.dawnstep.codemonkey.service.data.database.NewSkillGet;
+import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
+import com.dawnstep.codemonkey.service.data.database.News;
+import com.dawnstep.codemonkey.service.data.database.NewsImage;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;

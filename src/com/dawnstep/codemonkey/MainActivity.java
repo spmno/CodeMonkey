@@ -2,6 +2,8 @@ package com.dawnstep.codemonkey;
 
 import java.util.Locale;
 
+import com.dawnstep.codemonkey.discovery.DiscoveryFragment;
+import com.dawnstep.codemonkey.news.NewsFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 

@@ -1,6 +1,6 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.utils;
 
-public final class NewsConfig {
+public final class CodeMonkeyConfig {
 	static public String getNewsNetPath() {
 		if(Debug.ENABLE) {
 			return "http://192.168.2.231:3000//infos.json";

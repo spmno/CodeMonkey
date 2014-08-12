@@ -39,13 +39,13 @@
         </activity>
 
         <service
-            android:name="com.dawnstep.codemonkey.CodeMonkeyService"
+            android:name="com.dawnstep.codemonkey.service.CodeMonkeyService"
             android:enabled="true"
             android:exported="true" >
         </service>
 
         <activity
-            android:name="com.dawnstep.codemonkey.NewsShowActivity"
+            android:name="com.dawnstep.codemonkey.news.NewsShowActivity"
             android:label="@string/title_activity_news_show" >
         </activity>
         <activity
@@ -53,7 +53,7 @@
             android:label="@string/title_activity_contact_us" >
         </activity>
         <activity
-            android:name="com.dawnstep.codemonkey.NewSkillGetKindActivity"
+            android:name="com.dawnstep.codemonkey.discovery.newskillget.NewSkillGetKindActivity"
             android:label="@string/title_activity_new_skill_get_kind" >
         </activity>
     </application>

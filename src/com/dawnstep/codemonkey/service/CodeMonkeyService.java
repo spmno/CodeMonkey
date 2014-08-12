@@ -1,7 +1,12 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service;
 
 
+import com.dawnstep.codemonkey.ConnectManager;
 import com.dawnstep.codemonkey.ConnectManager.ConnectStatus;
+import com.dawnstep.codemonkey.service.data.CodeMonkeyDataProvider;
+import com.dawnstep.codemonkey.service.data.CodeMonkeyDatabaseHelper;
+import com.dawnstep.codemonkey.service.data.NewsDataListener;
+import com.dawnstep.codemonkey.service.data.NewsDataProviderFactory;
 
 import android.app.Service;
 import android.content.Context;

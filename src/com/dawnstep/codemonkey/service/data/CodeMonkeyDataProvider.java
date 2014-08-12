@@ -1,4 +1,4 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service.data;
 
 import java.util.ArrayList;
 import java.util.List;

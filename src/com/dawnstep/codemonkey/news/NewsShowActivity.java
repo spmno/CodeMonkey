@@ -1,4 +1,7 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.news;
+
+import com.dawnstep.codemonkey.R;
+import com.dawnstep.codemonkey.utils.CodeMonkeyConfig;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -62,7 +65,7 @@ public class NewsShowActivity extends Activity {
 					container, false);
 			Bundle bundle = getActivity().getIntent().getExtras();
 			String newsId = bundle.getString("newsId");
-			String newsUrl = NewsConfig.getInfoPath() + "/" + newsId;
+			String newsUrl = CodeMonkeyConfig.getInfoPath() + "/" + newsId;
 			webView = (WebView)rootView.findViewById(R.id.webview);
 			webView.loadUrl(newsUrl);
 			return rootView;

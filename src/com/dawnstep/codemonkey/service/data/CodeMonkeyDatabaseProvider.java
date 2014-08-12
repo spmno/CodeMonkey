@@ -1,8 +1,11 @@
-package com.dawnstep.codemonkey;
+package com.dawnstep.codemonkey.service.data;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import com.dawnstep.codemonkey.service.data.database.News;
+import com.dawnstep.codemonkey.service.data.database.NewsImage;
+import com.dawnstep.codemonkey.news.NewsManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
