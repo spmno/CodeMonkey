@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dawnstep.codemonkey.R;
+import com.dawnstep.codemonkey.news.NewsFragment;
+import com.dawnstep.codemonkey.service.CodeMonkeyService;
+import com.dawnstep.codemonkey.service.data.NewSkillGetKindListener;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +62,8 @@ public class NewSkillGetKindActivity extends Activity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 		private ListView newSkillGetListView;
-		
+		private CodeMonkeyService.CodeMonkeyBinder newBinder;
+		private ProgressDialog progressDialog;
 		public PlaceholderFragment() {
 		}
 
@@ -80,7 +88,38 @@ public class NewSkillGetKindActivity extends Activity {
 	        return data;
 		}
 		
-		
+		public class NewSkillGetKindServiceConnection implements ServiceConnection, NewSkillGetKindListener {
+
+			@Override
+			public void dataArrived() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onServiceConnected(ComponentName arg0, IBinder binder) {
+				// TODO Auto-generated method stub
+				newBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
+				newBinder.addNewSkillGetKindListener(this);
+				Activity parentActivity = PlaceholderFragment.this.getActivity();
+				progressDialog = new ProgressDialog(parentActivity);
+				String title = parentActivity.getResources().getString(R.string.downloading_title);
+				String text = parentActivity.getResources().getString(R.string.downloading_text);
+				progressDialog.setTitle(title);
+				progressDialog.setMessage(text);
+				progressDialog.setCancelable(false);
+				progressDialog.show();
+				
+				newBinder.getNewSkillGets();	
+			}
+
+			@Override
+			public void onServiceDisconnected(ComponentName arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
 	}
 
 }

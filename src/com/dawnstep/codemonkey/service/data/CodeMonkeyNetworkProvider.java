@@ -166,7 +166,7 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 			e.printStackTrace();
 		}
 		
-		for (NewsDataListener listener : listenerContainer) {
+		for (NewsDataListener listener : newsDataListenerContainer) {
 			listener.dataArrived();
 		}
 	}

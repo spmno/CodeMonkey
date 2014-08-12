@@ -47,7 +47,7 @@ public class CodeMonkeyDatabaseProvider extends CodeMonkeyDataProvider {
 				e.printStackTrace();
 			}
 
-			for (NewsDataListener listener : listenerContainer) {
+			for (NewsDataListener listener : newsDataListenerContainer) {
 				listener.dataArrived();
 			}
 		}

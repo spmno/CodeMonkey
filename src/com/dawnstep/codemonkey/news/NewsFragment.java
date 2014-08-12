@@ -80,7 +80,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			// TODO Auto-generated method stub
 			newBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
-			newBinder.addDataArrivedListener(this);
+			newBinder.addNewsDataArrivedListener(this);
 			Activity parentActivity = NewsFragment.this.getActivity();
 			progressDialog = new ProgressDialog(parentActivity);
 			String title = parentActivity.getResources().getString(R.string.downloading_title);
