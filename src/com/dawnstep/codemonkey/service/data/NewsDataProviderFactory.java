@@ -1,5 +1,7 @@
 package com.dawnstep.codemonkey.service.data;
 
+import com.dawnstep.codemonkey.service.data.net.CodeMonkeyNetworkProvider;
+
 
 
 public class NewsDataProviderFactory {

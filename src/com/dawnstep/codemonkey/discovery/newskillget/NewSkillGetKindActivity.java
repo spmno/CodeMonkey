@@ -1,5 +1,6 @@
 package com.dawnstep.codemonkey.discovery.newskillget;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import com.dawnstep.codemonkey.R;
 import com.dawnstep.codemonkey.news.NewsFragment;
 import com.dawnstep.codemonkey.service.CodeMonkeyService;
 import com.dawnstep.codemonkey.service.data.NewSkillGetKindListener;
+import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -14,7 +16,9 @@ import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +68,7 @@ public class NewSkillGetKindActivity extends Activity {
 		private ListView newSkillGetListView;
 		private CodeMonkeyService.CodeMonkeyBinder newBinder;
 		private ProgressDialog progressDialog;
+		private ArrayAdapter<String> newSkillGetKindAdapter;
 		public PlaceholderFragment() {
 		}
 
@@ -73,20 +78,35 @@ public class NewSkillGetKindActivity extends Activity {
 			View rootView = inflater.inflate(
 					R.layout.fragment_new_skill_get_kind, container, false);
 			newSkillGetListView = (ListView)rootView.findViewById(R.id.newsListView);
-			newSkillGetListView.setAdapter(new ArrayAdapter<String>(getActivity(), 
+			newSkillGetKindAdapter = new ArrayAdapter<String>(getActivity(), 
 					android.R.layout.simple_expandable_list_item_1, 
-					getNewSkillGetKind()));
+					getNewSkillGetKind());
+			newSkillGetListView.setAdapter(newSkillGetKindAdapter);
 			return rootView;
 		}
 		
 		public List<String> getNewSkillGetKind() {
+			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
+			List<NewSkillGetKind> newSkillGetKindList = newSkillGetKindManager.getNewSkillGetKindList();
 			List<String> data = new ArrayList<String>();
-			data.add("新技能get");
-	        data.add("找女神");
-	        data.add("找设计");
-	        data.add("近期活动");
+			for (NewSkillGetKind newSkillGetKind : newSkillGetKindList) {
+				data.add(newSkillGetKind.getTitle());
+			}
 	        return data;
 		}
+		
+		static class NewsHandler extends Handler {
+			private WeakReference<PlaceholderFragment> fragment;
+			NewsHandler(PlaceholderFragment fragment) {
+				this.fragment = new WeakReference<PlaceholderFragment>(fragment);
+			}
+			@Override
+			public void handleMessage(Message message) {
+				PlaceholderFragment parentFragment = fragment.get();
+				parentFragment.newSkillGetKindAdapter.notifyDataSetChanged();
+			}
+		}
+
 		
 		public class NewSkillGetKindServiceConnection implements ServiceConnection, NewSkillGetKindListener {
 

@@ -15,6 +15,8 @@ public class NewSkillGet {
 	private String content;
 	@DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
+	@DatabaseField(foreignColumnName="id", foreign=true, foreignAutoRefresh = true, useGetSet=true)
+	private NewSkillGetKind newSkillGetKindId;
 	public String getTitle() {
 		return title;
 	}

@@ -1,4 +1,4 @@
-package com.dawnstep.codemonkey.service.data;
+package com.dawnstep.codemonkey.service.data.net;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.HttpResponse;
@@ -17,18 +18,20 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 
+import com.dawnstep.codemonkey.news.NewsManager;
+import com.dawnstep.codemonkey.service.data.CodeMonkeyDatabaseHelper;
+import com.dawnstep.codemonkey.service.data.NewsDataListener;
 import com.dawnstep.codemonkey.service.data.database.News;
 import com.dawnstep.codemonkey.service.data.database.NewsImage;
-import com.dawnstep.codemonkey.news.NewsManager;
 import com.dawnstep.codemonkey.utils.CodeMonkeyConfig;
 import com.j256.ormlite.dao.Dao;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
-
-	@Override
-	public void getNews() {
+public class NewsDataNetworkProvider {
+	private List<NewsDataListener> newsDataListenerContainer;
+	public void getNews(List<NewsDataListener> listener) {
 		// TODO Auto-generated method stub
+		this.newsDataListenerContainer = listener;
 		GetNewsThread getNewsThread = new GetNewsThread();
 		getNewsThread.start();
 	}
@@ -66,10 +69,10 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 		}
 		return false;
 	}
+	
 	public void getNewsImp() {
 		NewsManager newsManager = NewsManager.getInstance();
-		//String urlPath = "http://192.168.2.231:3000/infos.json";
-		String urlPath = CodeMonkeyConfig.getNewsNetPath();//"http://115.29.139.76:3000/infos.json";
+		String urlPath = CodeMonkeyConfig.getNewsNetPath();
 		int offset = newsManager.getOffset();
 		String urlPathWithParam = urlPath 
 				+ "?"
@@ -129,21 +132,7 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
             		newsImage.setImageURL(imageUrl);
             		newsImage.setNewsId(news);
             		ImageLoader imageLoader = ImageLoader.getInstance(); 
-            		/* async
-            		imageLoader.loadImage(imageUrl, new SimpleImageLoadingListener() {
-            			@Override
-            		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            		        // Do whatever you want with Bitmap
-            				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            				loadedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-            			    byte[] imageBytes =  baos.toByteArray();
-            			    newsImage.setImageBytes(imageBytes);
-            			    saveNewsImageToDatabase(newsImage);
-            		    }
-            		});
-            		*/
+   
             		String absolutelyImageUrl = CodeMonkeyConfig.getNetRootPath() + imageUrl;
             		Bitmap bitmap = imageLoader.loadImageSync(absolutelyImageUrl);
             		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -178,11 +167,4 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 			getNewsImp();
 		}
 	}
-
-	@Override
-	public void getNewSkillGets() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
