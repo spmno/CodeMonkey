@@ -14,7 +14,8 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 	@Override
 	public void getNewSkillGets() {
 		// TODO Auto-generated method stub
-		
+		NewSkillGetKindNetworkProvider newSkillGetKindNetworkProvider = new NewSkillGetKindNetworkProvider();
+		newSkillGetKindNetworkProvider.getNewSkillGetKind(newSkillGetKindListenerContainer);
 	}
 
 

@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dawnstep.codemonkey.R;
+import com.dawnstep.codemonkey.discovery.newskillget.NewSkillGetKindActivity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class DiscoveryFragment extends Fragment {
+public class DiscoveryFragment extends Fragment implements OnItemClickListener {
 	
 	private ListView discoveryListView;
 	
@@ -26,6 +30,7 @@ public class DiscoveryFragment extends Fragment {
 		discoveryListView.setAdapter(new ArrayAdapter<String>(getActivity(), 
 				android.R.layout.simple_expandable_list_item_1, 
 				getDiscoveries()));
+		discoveryListView.setOnItemClickListener(this);
 		return rootView;
 	}
 	
@@ -36,6 +41,16 @@ public class DiscoveryFragment extends Fragment {
         data.add("找设计");
         data.add("近期活动");
         return data;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		// TODO Auto-generated method stub
+		if (position == 0) {
+			Intent intent = new Intent(getActivity(), NewSkillGetKindActivity.class);
+			getActivity().startActivity(intent);
+		}
+
 	}
 	
 }

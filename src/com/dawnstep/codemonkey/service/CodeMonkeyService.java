@@ -74,16 +74,16 @@ public class CodeMonkeyService extends Service {
 		}
 				
 		public void addNewSkillGetKindListener(NewSkillGetKindListener listener) {
-			
+			currentDataProvider.addNewSkillGetKindListener(listener);
 		}
 		
 		public void getNews() {
-			updateProvider();
+			//updateProvider();
 			currentDataProvider.getNews();
 		}
 		
 		public void getNewSkillGets() {
-			updateProvider();
+			//updateProvider();
 			currentDataProvider.getNewSkillGets();
 		}
 

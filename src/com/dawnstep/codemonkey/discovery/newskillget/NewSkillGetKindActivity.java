@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dawnstep.codemonkey.R;
-import com.dawnstep.codemonkey.news.NewsFragment;
 import com.dawnstep.codemonkey.service.CodeMonkeyService;
 import com.dawnstep.codemonkey.service.data.NewSkillGetKindListener;
 import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
@@ -14,6 +13,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
@@ -69,6 +70,9 @@ public class NewSkillGetKindActivity extends Activity {
 		private CodeMonkeyService.CodeMonkeyBinder newBinder;
 		private ProgressDialog progressDialog;
 		private ArrayAdapter<String> newSkillGetKindAdapter;
+		NewSkillGetKindHandler newSkillGetKindHandle;
+		private NewSkillGetKindServiceConnection newSkillGetKindServiceConnection;
+		NewSkillGetKindHandler newSkillGetKindHandler;
 		public PlaceholderFragment() {
 		}
 
@@ -77,11 +81,13 @@ public class NewSkillGetKindActivity extends Activity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_new_skill_get_kind, container, false);
-			newSkillGetListView = (ListView)rootView.findViewById(R.id.newsListView);
-			newSkillGetKindAdapter = new ArrayAdapter<String>(getActivity(), 
-					android.R.layout.simple_expandable_list_item_1, 
-					getNewSkillGetKind());
-			newSkillGetListView.setAdapter(newSkillGetKindAdapter);
+			newSkillGetListView = (ListView)rootView.findViewById(R.id.newSkillKindListview);
+
+			newSkillGetKindHandle = new NewSkillGetKindHandler(this);
+			Intent intent = new Intent(getActivity(), CodeMonkeyService.class);
+			newSkillGetKindServiceConnection = new NewSkillGetKindServiceConnection();
+			getActivity().bindService(intent, newSkillGetKindServiceConnection, Context.BIND_AUTO_CREATE);
+			newSkillGetKindHandler = new NewSkillGetKindHandler(this);
 			return rootView;
 		}
 		
@@ -95,15 +101,19 @@ public class NewSkillGetKindActivity extends Activity {
 	        return data;
 		}
 		
-		static class NewsHandler extends Handler {
+		static class NewSkillGetKindHandler extends Handler {
 			private WeakReference<PlaceholderFragment> fragment;
-			NewsHandler(PlaceholderFragment fragment) {
+			NewSkillGetKindHandler(PlaceholderFragment fragment) {
 				this.fragment = new WeakReference<PlaceholderFragment>(fragment);
 			}
 			@Override
 			public void handleMessage(Message message) {
 				PlaceholderFragment parentFragment = fragment.get();
-				parentFragment.newSkillGetKindAdapter.notifyDataSetChanged();
+				//parentFragment.newSkillGetKindAdapter.notifyDataSetChanged();
+				parentFragment.newSkillGetKindAdapter = new ArrayAdapter<String>(parentFragment.getActivity(), 
+						android.R.layout.simple_expandable_list_item_1, 
+						parentFragment.getNewSkillGetKind());
+				parentFragment.newSkillGetListView.setAdapter(parentFragment.newSkillGetKindAdapter);
 			}
 		}
 
@@ -113,7 +123,8 @@ public class NewSkillGetKindActivity extends Activity {
 			@Override
 			public void dataArrived() {
 				// TODO Auto-generated method stub
-				
+				newSkillGetKindHandle.sendEmptyMessage(0);
+				progressDialog.dismiss();
 			}
 
 			@Override
