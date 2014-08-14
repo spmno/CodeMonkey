@@ -35,7 +35,7 @@ public class NewSkillGetKindActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_skill_get_kind);
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -57,6 +57,9 @@ public class NewSkillGetKindActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			return true;
+		} else if (id == android.R.id.home) {
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -111,7 +114,7 @@ public class NewSkillGetKindActivity extends Activity {
 				PlaceholderFragment parentFragment = fragment.get();
 				//parentFragment.newSkillGetKindAdapter.notifyDataSetChanged();
 				parentFragment.newSkillGetKindAdapter = new ArrayAdapter<String>(parentFragment.getActivity(), 
-						android.R.layout.simple_expandable_list_item_1, 
+						android.R.layout.simple_list_item_1, 
 						parentFragment.getNewSkillGetKind());
 				parentFragment.newSkillGetListView.setAdapter(parentFragment.newSkillGetKindAdapter);
 			}
