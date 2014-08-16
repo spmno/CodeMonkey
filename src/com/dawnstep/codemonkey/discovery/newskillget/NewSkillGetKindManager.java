@@ -33,4 +33,7 @@ public class NewSkillGetKindManager {
 		return currentOffset;
 	}
 	
+	public void clear() {
+		this.newSkillGetKindList.clear();
+	}
 }

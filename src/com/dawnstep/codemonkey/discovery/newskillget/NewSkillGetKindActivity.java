@@ -96,7 +96,14 @@ public class NewSkillGetKindActivity extends Activity {
 					android.R.layout.simple_list_item_1, 
 					newSkillGetKindData);
 			newSkillGetListView.setAdapter(newSkillGetKindAdapter);
+			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
+			newSkillGetKindManager.clear();
 			return rootView;
+		}
+		
+		public void onDestroyView() {
+			super.onDestroyView();
+			getActivity().unbindService(newSkillGetKindServiceConnection);
 		}
 		
 		public void getNewSkillGetKind(List<String> data) {
