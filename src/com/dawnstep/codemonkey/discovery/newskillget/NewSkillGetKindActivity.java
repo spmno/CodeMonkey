@@ -73,6 +73,7 @@ public class NewSkillGetKindActivity extends Activity {
 		private CodeMonkeyService.CodeMonkeyBinder newBinder;
 		private ProgressDialog progressDialog;
 		private ArrayAdapter<String> newSkillGetKindAdapter;
+		private List<String> newSkillGetKindData = new ArrayList<String>();
 		NewSkillGetKindHandler newSkillGetKindHandle;
 		private NewSkillGetKindServiceConnection newSkillGetKindServiceConnection;
 		NewSkillGetKindHandler newSkillGetKindHandler;
@@ -91,17 +92,19 @@ public class NewSkillGetKindActivity extends Activity {
 			newSkillGetKindServiceConnection = new NewSkillGetKindServiceConnection();
 			getActivity().bindService(intent, newSkillGetKindServiceConnection, Context.BIND_AUTO_CREATE);
 			newSkillGetKindHandler = new NewSkillGetKindHandler(this);
+			newSkillGetKindAdapter = new ArrayAdapter<String>(getActivity(), 
+					android.R.layout.simple_list_item_1, 
+					newSkillGetKindData);
+			newSkillGetListView.setAdapter(newSkillGetKindAdapter);
 			return rootView;
 		}
 		
-		public List<String> getNewSkillGetKind() {
+		public void getNewSkillGetKind(List<String> data) {
 			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
 			List<NewSkillGetKind> newSkillGetKindList = newSkillGetKindManager.getNewSkillGetKindList();
-			List<String> data = new ArrayList<String>();
 			for (NewSkillGetKind newSkillGetKind : newSkillGetKindList) {
 				data.add(newSkillGetKind.getTitle());
 			}
-	        return data;
 		}
 		
 		static class NewSkillGetKindHandler extends Handler {
@@ -112,11 +115,8 @@ public class NewSkillGetKindActivity extends Activity {
 			@Override
 			public void handleMessage(Message message) {
 				PlaceholderFragment parentFragment = fragment.get();
-				//parentFragment.newSkillGetKindAdapter.notifyDataSetChanged();
-				parentFragment.newSkillGetKindAdapter = new ArrayAdapter<String>(parentFragment.getActivity(), 
-						android.R.layout.simple_list_item_1, 
-						parentFragment.getNewSkillGetKind());
-				parentFragment.newSkillGetListView.setAdapter(parentFragment.newSkillGetKindAdapter);
+				parentFragment.getNewSkillGetKind(parentFragment.newSkillGetKindData);
+				parentFragment.newSkillGetKindAdapter.notifyDataSetChanged();				
 			}
 		}
 
