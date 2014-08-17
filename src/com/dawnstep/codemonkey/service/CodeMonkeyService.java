@@ -72,10 +72,12 @@ public class CodeMonkeyService extends Service {
 		public void addNewsDataArrivedListener(NewsDataListener listener) {
 			currentDataProvider.addNewsDataListener(listener);
 		}
-				
+		
+			
 		public void addNewSkillGetKindListener(NewSkillGetKindListener listener) {
 			currentDataProvider.addNewSkillGetKindListener(listener);
 		}
+		
 		
 		public void getNews() {
 			//updateProvider();

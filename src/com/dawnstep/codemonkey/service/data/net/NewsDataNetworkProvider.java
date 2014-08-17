@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.HttpResponse;
@@ -28,10 +27,10 @@ import com.j256.ormlite.dao.Dao;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class NewsDataNetworkProvider {
-	private List<NewsDataListener> newsDataListenerContainer;
-	public void getNews(List<NewsDataListener> listener) {
+	private NewsDataListener newsDataListener;
+	public void getNews(NewsDataListener listener) {
 		// TODO Auto-generated method stub
-		this.newsDataListenerContainer = listener;
+		this.newsDataListener = listener;
 		GetNewsThread getNewsThread = new GetNewsThread();
 		getNewsThread.start();
 	}
@@ -155,9 +154,8 @@ public class NewsDataNetworkProvider {
 			e.printStackTrace();
 		}
 		
-		for (NewsDataListener listener : newsDataListenerContainer) {
-			listener.dataArrived();
-		}
+		newsDataListener.dataArrived();
+
 	}
 	
 	class GetNewsThread extends Thread {

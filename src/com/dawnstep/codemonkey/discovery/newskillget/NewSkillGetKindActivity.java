@@ -70,7 +70,7 @@ public class NewSkillGetKindActivity extends Activity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 		private ListView newSkillGetListView;
-		private CodeMonkeyService.CodeMonkeyBinder newBinder;
+		private CodeMonkeyService.CodeMonkeyBinder codeMonkeyBinder;
 		private ProgressDialog progressDialog;
 		private ArrayAdapter<String> newSkillGetKindAdapter;
 		private List<String> newSkillGetKindData = new ArrayList<String>();
@@ -140,8 +140,8 @@ public class NewSkillGetKindActivity extends Activity {
 			@Override
 			public void onServiceConnected(ComponentName arg0, IBinder binder) {
 				// TODO Auto-generated method stub
-				newBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
-				newBinder.addNewSkillGetKindListener(this);
+				codeMonkeyBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
+				codeMonkeyBinder.addNewSkillGetKindListener(this);
 				Activity parentActivity = PlaceholderFragment.this.getActivity();
 				progressDialog = new ProgressDialog(parentActivity);
 				String title = parentActivity.getResources().getString(R.string.downloading_title);
@@ -151,13 +151,12 @@ public class NewSkillGetKindActivity extends Activity {
 				progressDialog.setCancelable(false);
 				progressDialog.show();
 				
-				newBinder.getNewSkillGets();	
+				codeMonkeyBinder.getNewSkillGets();	
 			}
 
 			@Override
 			public void onServiceDisconnected(ComponentName arg0) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 		}

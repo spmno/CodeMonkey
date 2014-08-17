@@ -8,14 +8,14 @@ public class CodeMonkeyNetworkProvider extends CodeMonkeyDataProvider {
 	public void getNews() {
 		// TODO Auto-generated method stub
 		NewsDataNetworkProvider newsDataNetworkProvider = new NewsDataNetworkProvider();
-		newsDataNetworkProvider.getNews(newsDataListenerContainer);
+		newsDataNetworkProvider.getNews(newsDataListener);
 	}
 
 	@Override
 	public void getNewSkillGets() {
 		// TODO Auto-generated method stub
 		NewSkillGetKindNetworkProvider newSkillGetKindNetworkProvider = new NewSkillGetKindNetworkProvider();
-		newSkillGetKindNetworkProvider.getNewSkillGetKind(newSkillGetKindListenerContainer);
+		newSkillGetKindNetworkProvider.getNewSkillGetKind(newSkillGetKindListener);
 	}
 
 

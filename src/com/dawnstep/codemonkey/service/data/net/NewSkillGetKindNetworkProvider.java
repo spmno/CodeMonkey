@@ -3,7 +3,6 @@ package com.dawnstep.codemonkey.service.data.net;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,10 +19,10 @@ import com.dawnstep.codemonkey.utils.CodeMonkeyConfig;
 import com.j256.ormlite.dao.Dao;
 
 public class NewSkillGetKindNetworkProvider {
-	private List<NewSkillGetKindListener> newSkillGetKindListenerContainer;
-	public void getNewSkillGetKind(List<NewSkillGetKindListener> listener) {
+	private NewSkillGetKindListener newSkillGetKindListener;
+	public void getNewSkillGetKind(NewSkillGetKindListener listener) {
 		// TODO Auto-generated method stub
-		this.newSkillGetKindListenerContainer = listener;
+		this.newSkillGetKindListener = listener;
 		GetNewSkillGetKindThread getSkillGetKindThread = new GetNewSkillGetKindThread();
 		getSkillGetKindThread.start();
 	}
@@ -88,9 +87,8 @@ public class NewSkillGetKindNetworkProvider {
 			e.printStackTrace();
 		}
 		
-		for (NewSkillGetKindListener listener : newSkillGetKindListenerContainer) {
-			listener.dataArrived();
-		}
+		newSkillGetKindListener.dataArrived();
+
 	}
 	
 	class GetNewSkillGetKindThread extends Thread {
