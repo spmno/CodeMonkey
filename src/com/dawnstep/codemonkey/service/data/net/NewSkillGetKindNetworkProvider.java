@@ -78,7 +78,7 @@ public class NewSkillGetKindNetworkProvider {
             	NewSkillGetKind newSkillGetKind = new NewSkillGetKind();
             	newSkillGetKind.setNewSkillGetKindId(newSkillGetKindId);
             	newSkillGetKind.setTitle(title);
-            	newSkillGetKindManager.addNewsItem(newSkillGetKind);
+            	newSkillGetKindManager.addNewSkillGetKindItem(newSkillGetKind);
             	if (!saveFlag)
             		saveNewSkillGetKindToDatabase(newSkillGetKind);
        	

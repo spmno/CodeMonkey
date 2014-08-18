@@ -3,8 +3,10 @@ package com.dawnstep.codemonkey.service.data;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
 import com.dawnstep.codemonkey.service.data.database.News;
 import com.dawnstep.codemonkey.service.data.database.NewsImage;
+import com.dawnstep.codemonkey.discovery.newskillget.NewSkillGetKindManager;
 import com.dawnstep.codemonkey.news.NewsManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -55,6 +57,33 @@ public class CodeMonkeyDatabaseProvider extends CodeMonkeyDataProvider {
 	@Override
 	public void getNewSkillGets() {
 		// TODO Auto-generated method stub
+		GetNewSkillGetKindThread getNewSkillGetKindThread = new GetNewSkillGetKindThread();
+		getNewSkillGetKindThread.start();
+	}
+	
+	class GetNewSkillGetKindThread extends Thread {
 		
+		@Override
+		public void run() {
+			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
+			CodeMonkeyDatabaseHelper newsDatabaseHelper = CodeMonkeyDatabaseHelper.getInstance();
+			Dao<NewSkillGetKind, Integer> newSkillGetKindDao = newsDatabaseHelper.getNewSkillGetKindDao();
+			QueryBuilder<NewSkillGetKind, Integer> queryBuilder = newSkillGetKindDao.queryBuilder();
+
+			try {
+				queryBuilder.orderBy("updateTime", false);
+				PreparedQuery<NewSkillGetKind> preparedQuery = queryBuilder.prepare();  
+			    List<NewSkillGetKind> newSkillGetKindList = newSkillGetKindDao.query(preparedQuery);  
+			    for (NewSkillGetKind newSkillGetKind : newSkillGetKindList) {
+			    	newSkillGetKindManager.addNewSkillGetKindItem(newSkillGetKind);
+			    }
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			newSkillGetKindListener.dataArrived();
+			
+		}
 	}
 }

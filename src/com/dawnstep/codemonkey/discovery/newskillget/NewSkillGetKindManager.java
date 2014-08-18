@@ -24,7 +24,7 @@ public class NewSkillGetKindManager {
 	
 	private int currentOffset = 0;
 	
-	public void addNewsItem(NewSkillGetKind item) {
+	public void addNewSkillGetKindItem(NewSkillGetKind item) {
 		newSkillGetKindList.add(item);
 		currentOffset++;
 	}
