@@ -86,7 +86,7 @@ public class CodeMonkeyService extends Service {
 		
 		public void getNewSkillGets() {
 			//updateProvider();
-			currentDataProvider.getNewSkillGets();
+			currentDataProvider.getNewSkillKindGets();
 		}
 
 	}

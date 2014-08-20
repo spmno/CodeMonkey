@@ -31,4 +31,12 @@ public final class CodeMonkeyConfig {
 		}
 		return "http://115.29.139.76:3000/new_skill_get_kinds.json";
 	}
+	
+	//new skill get kind
+	static public String getNewSkillGetNetPath(String kindId) {
+		if(Debug.ENABLE) {
+			return "http://192.168.2.231:3000/new_skill_get_kinds.json";
+		}
+		return "http://115.29.139.76:3000/new_skill_get_kinds.json";
+	}
 }

@@ -2,7 +2,7 @@ package com.dawnstep.codemonkey.service.data.database;
 
 import com.j256.ormlite.field.DatabaseField;
 
-public class NewSkillGetKind {
+public class NewSkillGetKind implements Cloneable {
 	
 	@DatabaseField(canBeNull = false, id = true)
 	private int id;
@@ -23,5 +23,16 @@ public class NewSkillGetKind {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	@Override
+	public Object clone() {
+		NewSkillGetKind newSkillGetKind = null;  
+        try{  
+        	newSkillGetKind = (NewSkillGetKind)super.clone();  
+        }catch(CloneNotSupportedException e) {  
+            e.printStackTrace();  
+        }  
+        return newSkillGetKind; 
 	}
 }

@@ -55,7 +55,7 @@ public class CodeMonkeyDatabaseProvider extends CodeMonkeyDataProvider {
 	}
 
 	@Override
-	public void getNewSkillGets() {
+	public void getNewSkillKindGets() {
 		// TODO Auto-generated method stub
 		GetNewSkillGetKindThread getNewSkillGetKindThread = new GetNewSkillGetKindThread();
 		getNewSkillGetKindThread.start();
@@ -71,7 +71,6 @@ public class CodeMonkeyDatabaseProvider extends CodeMonkeyDataProvider {
 			QueryBuilder<NewSkillGetKind, Integer> queryBuilder = newSkillGetKindDao.queryBuilder();
 
 			try {
-				queryBuilder.orderBy("updateTime", false);
 				PreparedQuery<NewSkillGetKind> preparedQuery = queryBuilder.prepare();  
 			    List<NewSkillGetKind> newSkillGetKindList = newSkillGetKindDao.query(preparedQuery);  
 			    for (NewSkillGetKind newSkillGetKind : newSkillGetKindList) {

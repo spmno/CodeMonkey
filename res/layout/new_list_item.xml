@@ -11,11 +11,11 @@
 	    android:id="@+id/new_title"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="Medium Text"
 	    android:focusable="false"
 	    android:textAppearance="?android:attr/textAppearanceLarge" />
     
 	<ImageView android:id="@+id/new_image" 
+	    android:contentDescription="@string/news_image"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:focusable="false"

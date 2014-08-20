@@ -3,6 +3,7 @@ package com.dawnstep.codemonkey.news;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import com.dawnstep.codemonkey.CodeMonkeyApplication;
 import com.dawnstep.codemonkey.R;
 import com.dawnstep.codemonkey.service.data.NewsDataListener;
 import com.dawnstep.codemonkey.service.data.database.News;
@@ -10,16 +11,14 @@ import com.dawnstep.codemonkey.service.data.database.NewsImage;
 import com.dawnstep.codemonkey.service.CodeMonkeyService;
 
 
+import com.dawnstep.codemonkey.service.CodeMonkeyService.CodeMonkeyBinder;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,17 +35,16 @@ import android.widget.TextView;
 import android.graphics.Bitmap; 
 import android.graphics.BitmapFactory;
 
-public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener {
+public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener, NewsDataListener {
 	
 	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
-	private CodeMonkeyService.CodeMonkeyBinder newBinder;
-	private NewsServiceConnection newsConnection;
 	private NewsHandler newsHandler;
 	private NewsDataAdapter adapter;
 	private View moreView; //加载更多页面
 	private int lastItem;
 	private ProgressDialog progressDialog;
+	private CodeMonkeyBinder codeMonkeyBinder;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,57 +53,62 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 				false);
 		newsListView = (ListView)rootView.findViewById(R.id.newsListView);
 		
-		Intent intent = new Intent(getActivity(), CodeMonkeyService.class);
-		newsConnection = new NewsServiceConnection();
-		getActivity().bindService(intent, newsConnection, Context.BIND_AUTO_CREATE);
 		newsHandler = new NewsHandler(this);
-
 		moreView = getActivity().getLayoutInflater().inflate(R.layout.load, null);
 		adapter = new NewsDataAdapter();
 		newsListView.addFooterView(moreView);
 		newsListView.setAdapter(adapter);
 		newsListView.setOnScrollListener(NewsFragment.this);
-		newsListView.setOnItemClickListener(this);
+		newsListView.setOnItemClickListener(this);		
+
+		Activity parentActivity = NewsFragment.this.getActivity();
+		progressDialog = new ProgressDialog(parentActivity);
+		String title = parentActivity.getResources().getString(R.string.downloading_title);
+		String text = parentActivity.getResources().getString(R.string.downloading_text);
+		progressDialog.setTitle(title);
+		progressDialog.setMessage(text);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+		final CodeMonkeyApplication codeMonkeyApplication = (CodeMonkeyApplication)getActivity().getApplication();
+		codeMonkeyBinder = codeMonkeyApplication.getCodeMonkeyBinder();
+		if (codeMonkeyBinder != null) {
+			codeMonkeyBinder.addNewsDataArrivedListener(this);
+			codeMonkeyBinder.getNews();
+		} else {
+			new Thread() {
+				public void run() {
+					while(true) {
+						try {
+							Thread.sleep(500);
+							codeMonkeyBinder = codeMonkeyApplication.getCodeMonkeyBinder();
+							if (codeMonkeyBinder != null) {
+								codeMonkeyBinder.addNewsDataArrivedListener(NewsFragment.this);
+								codeMonkeyBinder.getNews();
+								break;
+							}
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}.start();
+		}
+		
+		
 		return rootView;
 	}
 	
 	public void onDestroyView() {
 		super.onDestroyView();
-		getActivity().unbindService(newsConnection);
 	}
 	
-	public class NewsServiceConnection implements ServiceConnection, NewsDataListener {
-
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder binder) {
-			// TODO Auto-generated method stub
-			newBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
-			newBinder.addNewsDataArrivedListener(this);
-			Activity parentActivity = NewsFragment.this.getActivity();
-			progressDialog = new ProgressDialog(parentActivity);
-			String title = parentActivity.getResources().getString(R.string.downloading_title);
-			String text = parentActivity.getResources().getString(R.string.downloading_text);
-			progressDialog.setTitle(title);
-			progressDialog.setMessage(text);
-			progressDialog.setCancelable(false);
-			progressDialog.show();
-			
-			newBinder.getNews();
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void dataArrived() {
-			newsHandler.sendEmptyMessage(0);
-			progressDialog.dismiss();
-		}
-		
+	@Override
+	public void dataArrived() {
+		newsHandler.sendEmptyMessage(0);
+		progressDialog.dismiss();
 	}
+	
 	
 	static class NewsHandler extends Handler {
 		private WeakReference<NewsFragment> fragment;
@@ -134,7 +137,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 			Log.i(TAG, "拉到最底部");
             moreView.setVisibility(AbsListView.VISIBLE);
 		}  
-		newBinder.getNews();
+		codeMonkeyBinder.getNews();
     }
 
 	class NewsDataAdapter extends BaseAdapter {

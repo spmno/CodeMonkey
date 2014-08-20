@@ -17,6 +17,13 @@ public class NewSkillGet {
 	private Date updateTime;
 	@DatabaseField(foreignColumnName="id", foreign=true, foreignAutoRefresh = true, useGetSet=true)
 	private NewSkillGetKind newSkillGetKindId;
+	
+	public NewSkillGetKind getNewSkillGetKindId() {
+		return newSkillGetKindId;
+	}
+	public void setNewSkillGetKindId(NewSkillGetKind newSkillGetKindId) {
+		this.newSkillGetKindId = newSkillGetKindId;
+	}
 	public String getTitle() {
 		return title;
 	}

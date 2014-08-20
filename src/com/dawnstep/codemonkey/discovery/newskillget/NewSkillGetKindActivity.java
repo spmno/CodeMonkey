@@ -4,21 +4,17 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dawnstep.codemonkey.CodeMonkeyApplication;
 import com.dawnstep.codemonkey.R;
-import com.dawnstep.codemonkey.service.CodeMonkeyService;
+import com.dawnstep.codemonkey.service.CodeMonkeyService.CodeMonkeyBinder;
 import com.dawnstep.codemonkey.service.data.NewSkillGetKindListener;
 import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -68,14 +64,11 @@ public class NewSkillGetKindActivity extends Activity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment {
+	public static class PlaceholderFragment extends Fragment implements NewSkillGetKindListener {
 		private ListView newSkillGetListView;
-		private CodeMonkeyService.CodeMonkeyBinder codeMonkeyBinder;
 		private ProgressDialog progressDialog;
 		private ArrayAdapter<String> newSkillGetKindAdapter;
 		private List<String> newSkillGetKindData = new ArrayList<String>();
-		NewSkillGetKindHandler newSkillGetKindHandle;
-		private NewSkillGetKindServiceConnection newSkillGetKindServiceConnection;
 		NewSkillGetKindHandler newSkillGetKindHandler;
 		public PlaceholderFragment() {
 		}
@@ -87,10 +80,6 @@ public class NewSkillGetKindActivity extends Activity {
 					R.layout.fragment_new_skill_get_kind, container, false);
 			newSkillGetListView = (ListView)rootView.findViewById(R.id.newSkillKindListview);
 
-			newSkillGetKindHandle = new NewSkillGetKindHandler(this);
-			Intent intent = new Intent(getActivity(), CodeMonkeyService.class);
-			newSkillGetKindServiceConnection = new NewSkillGetKindServiceConnection();
-			getActivity().bindService(intent, newSkillGetKindServiceConnection, Context.BIND_AUTO_CREATE);
 			newSkillGetKindHandler = new NewSkillGetKindHandler(this);
 			newSkillGetKindAdapter = new ArrayAdapter<String>(getActivity(), 
 					android.R.layout.simple_list_item_1, 
@@ -98,12 +87,23 @@ public class NewSkillGetKindActivity extends Activity {
 			newSkillGetListView.setAdapter(newSkillGetKindAdapter);
 			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
 			newSkillGetKindManager.clear();
+			
+			Activity parentActivity = getActivity();
+			CodeMonkeyApplication codeMonkeyApplication = (CodeMonkeyApplication)parentActivity.getApplication();
+			CodeMonkeyBinder codeMonkeyBinder = codeMonkeyApplication.getCodeMonkeyBinder();
+			codeMonkeyBinder.addNewSkillGetKindListener(this);
+			
+			progressDialog = new ProgressDialog(parentActivity);
+			String title = parentActivity.getResources().getString(R.string.downloading_title);
+			String text = parentActivity.getResources().getString(R.string.downloading_text);
+			progressDialog.setTitle(title);
+			progressDialog.setMessage(text);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+			
+			codeMonkeyBinder.getNewSkillGets();	
+			
 			return rootView;
-		}
-		
-		public void onDestroyView() {
-			super.onDestroyView();
-			getActivity().unbindService(newSkillGetKindServiceConnection);
 		}
 		
 		public void getNewSkillGetKind(List<String> data) {
@@ -127,38 +127,11 @@ public class NewSkillGetKindActivity extends Activity {
 			}
 		}
 
-		
-		public class NewSkillGetKindServiceConnection implements ServiceConnection, NewSkillGetKindListener {
-
-			@Override
-			public void dataArrived() {
-				// TODO Auto-generated method stub
-				newSkillGetKindHandle.sendEmptyMessage(0);
-				progressDialog.dismiss();
-			}
-
-			@Override
-			public void onServiceConnected(ComponentName arg0, IBinder binder) {
-				// TODO Auto-generated method stub
-				codeMonkeyBinder = (CodeMonkeyService.CodeMonkeyBinder)binder;
-				codeMonkeyBinder.addNewSkillGetKindListener(this);
-				Activity parentActivity = PlaceholderFragment.this.getActivity();
-				progressDialog = new ProgressDialog(parentActivity);
-				String title = parentActivity.getResources().getString(R.string.downloading_title);
-				String text = parentActivity.getResources().getString(R.string.downloading_text);
-				progressDialog.setTitle(title);
-				progressDialog.setMessage(text);
-				progressDialog.setCancelable(false);
-				progressDialog.show();
-				
-				codeMonkeyBinder.getNewSkillGets();	
-			}
-
-			@Override
-			public void onServiceDisconnected(ComponentName arg0) {
-				// TODO Auto-generated method stub
-			}
-			
+		@Override
+		public void dataArrived() {
+			// TODO Auto-generated method stub
+			newSkillGetKindHandler.sendEmptyMessage(0);
+			progressDialog.dismiss();
 		}
 	}
 

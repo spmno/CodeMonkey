@@ -21,7 +21,7 @@ public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	
 	private static final String TAG = "NewsDatabaseHelper";
     // 数据库名称
-    private static final String DATABASE_NAME = "news.db";
+    private static final String DATABASE_NAME = "code_monkey.db";
     // 数据库version
     private static final int DATABASE_VERSION = 1;
     private static CodeMonkeyDatabaseHelper databaseHelper;
@@ -58,6 +58,7 @@ public class CodeMonkeyDatabaseHelper extends OrmLiteSqliteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         initDaoMaps();
 	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
 		// TODO Auto-generated method stub
