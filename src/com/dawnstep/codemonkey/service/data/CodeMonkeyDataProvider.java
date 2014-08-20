@@ -4,11 +4,11 @@ package com.dawnstep.codemonkey.service.data;
 public abstract class CodeMonkeyDataProvider {
 	public abstract void getNews();
 	public abstract void getNewSkillKindGets();
-	public NewsDataListener newsDataListener;
+	public DataListener networkListener;
 	public NewSkillGetKindListener newSkillGetKindListener;;
-	public void addNewsDataListener(NewsDataListener listener) {
+	public void addNewsDataListener(DataListener listener) {
 		// TODO Auto-generated method stub
-		newsDataListener = listener;
+		networkListener = listener;
 	}
 	
 	public void addNewSkillGetKindListener(NewSkillGetKindListener listener) {
