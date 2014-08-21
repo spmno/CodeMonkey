@@ -5,8 +5,7 @@ import com.dawnstep.codemonkey.ConnectManager;
 import com.dawnstep.codemonkey.ConnectManager.ConnectStatus;
 import com.dawnstep.codemonkey.service.data.CodeMonkeyDataProvider;
 import com.dawnstep.codemonkey.service.data.CodeMonkeyDatabaseHelper;
-import com.dawnstep.codemonkey.service.data.NewSkillGetKindListener;
-import com.dawnstep.codemonkey.service.data.NewsDataListener;
+import com.dawnstep.codemonkey.service.data.DataListener;
 import com.dawnstep.codemonkey.service.data.NewsDataProviderFactory;
 
 import android.app.Service;
@@ -69,15 +68,18 @@ public class CodeMonkeyService extends Service {
 	
 	public class CodeMonkeyBinder extends Binder {
 
-		public void addNewsDataArrivedListener(NewsDataListener listener) {
-			currentDataProvider.addNewsDataListener(listener);
+		public void addNewsDataArrivedListener(DataListener listener) {
+			currentDataProvider.addDataListener(listener);
 		}
 		
 			
-		public void addNewSkillGetKindListener(NewSkillGetKindListener listener) {
-			currentDataProvider.addNewSkillGetKindListener(listener);
+		public void addNewSkillGetKindListener(DataListener listener) {
+			currentDataProvider.addDataListener(listener);
 		}
 		
+		public void addNewSkillGetListener(DataListener listener) {
+			currentDataProvider.addDataListener(listener);
+		}
 		
 		public void getNews() {
 			//updateProvider();
@@ -89,5 +91,9 @@ public class CodeMonkeyService extends Service {
 			currentDataProvider.getNewSkillKindGets();
 		}
 
+		public void getNewSkillKindGets() {
+			//updateProvider();
+			currentDataProvider.getNewSkillKindGets();
+		}
 	}
 }

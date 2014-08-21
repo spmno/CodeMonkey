@@ -4,11 +4,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dawnstep.codemonkey.CodeMonkeyApplication;
 import com.dawnstep.codemonkey.R;
-import com.dawnstep.codemonkey.discovery.newskillget.NewSkillGetKindActivity.PlaceholderFragment;
-import com.dawnstep.codemonkey.discovery.newskillget.NewSkillGetKindActivity.PlaceholderFragment.NewSkillGetKindHandler;
-import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
-
+import com.dawnstep.codemonkey.service.CodeMonkeyService.CodeMonkeyBinder;
+import com.dawnstep.codemonkey.service.data.DataListener;
+import com.dawnstep.codemonkey.service.data.database.NewSkillGet;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -17,13 +17,13 @@ import android.os.Message;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class NewSkillGetActivity extends Activity {
+public class NewSkillGetActivity extends Activity implements DataListener {
 	
 	private ListView newSkillGetListView;
 	private ProgressDialog progressDialog;
 	private ArrayAdapter<String> newSkillGetAdapter;
 	private List<String> newSkillGetData = new ArrayList<String>();
-	NewSkillGetHandler newSkillGetKindHandler;
+	NewSkillGetHandler newSkillGetHandler;
 	
 	static class NewSkillGetHandler extends Handler {
 		private WeakReference<NewSkillGetActivity> activity;
@@ -40,10 +40,10 @@ public class NewSkillGetActivity extends Activity {
 	}
 	
 	public void getNewSkillGet(List<String> data) {
-		NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
-		List<NewSkillGetKind> newSkillGetKindList = newSkillGetKindManager.getNewSkillGetKindList();
-		for (NewSkillGetKind newSkillGetKind : newSkillGetKindList) {
-			data.add(newSkillGetKind.getTitle());
+		NewSkillGetManager newSkillGetManager = NewSkillGetManager.getInstance();
+		List<NewSkillGet> newSkillGetList = newSkillGetManager.getNewSkillGetList();
+		for (NewSkillGet newSkillGet : newSkillGetList) {
+			data.add(newSkillGet.getTitle());
 		}
 	}
 	
@@ -53,6 +53,34 @@ public class NewSkillGetActivity extends Activity {
 		setContentView(R.layout.activity_new_skill_get);
 		
 		newSkillGetListView = (ListView)findViewById(R.id.newSkillGetListview);
+		newSkillGetHandler = new NewSkillGetHandler(this);
+		newSkillGetAdapter = new ArrayAdapter<String>(this, 
+				android.R.layout.simple_list_item_1, 
+				newSkillGetData);
+		newSkillGetListView.setAdapter(newSkillGetAdapter);
+		NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
+		newSkillGetKindManager.clear();
 		
+		CodeMonkeyApplication codeMonkeyApplication = (CodeMonkeyApplication)getApplication();
+		CodeMonkeyBinder codeMonkeyBinder = codeMonkeyApplication.getCodeMonkeyBinder();
+		codeMonkeyBinder.addNewSkillGetListener(this);
+		
+		progressDialog = new ProgressDialog(this);
+		String title = getResources().getString(R.string.downloading_title);
+		String text = getResources().getString(R.string.downloading_text);
+		progressDialog.setTitle(title);
+		progressDialog.setMessage(text);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+		
+		codeMonkeyBinder.getNewSkillGets();	
+		
+	}
+
+	@Override
+	public void dataArrived() {
+		// TODO Auto-generated method stub
+		newSkillGetHandler.sendEmptyMessage(0);
+		progressDialog.dismiss();
 	}
 }

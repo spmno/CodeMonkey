@@ -7,7 +7,7 @@ import java.util.List;
 import com.dawnstep.codemonkey.CodeMonkeyApplication;
 import com.dawnstep.codemonkey.R;
 import com.dawnstep.codemonkey.service.CodeMonkeyService.CodeMonkeyBinder;
-import com.dawnstep.codemonkey.service.data.NewSkillGetKindListener;
+import com.dawnstep.codemonkey.service.data.DataListener;
 import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
 
 import android.app.Activity;
@@ -64,7 +64,7 @@ public class NewSkillGetKindActivity extends Activity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment implements NewSkillGetKindListener {
+	public static class PlaceholderFragment extends Fragment implements DataListener {
 		private ListView newSkillGetListView;
 		private ProgressDialog progressDialog;
 		private ArrayAdapter<String> newSkillGetKindAdapter;
@@ -101,7 +101,7 @@ public class NewSkillGetKindActivity extends Activity {
 			progressDialog.setCancelable(false);
 			progressDialog.show();
 			
-			codeMonkeyBinder.getNewSkillGets();	
+			codeMonkeyBinder.getNewSkillKindGets();	
 			
 			return rootView;
 		}
