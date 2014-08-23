@@ -21,11 +21,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class NewSkillGetKindActivity extends Activity {
+public class NewSkillGetKindActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,12 @@ public class NewSkillGetKindActivity extends Activity {
 			newSkillGetKindHandler.sendEmptyMessage(0);
 			progressDialog.dismiss();
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

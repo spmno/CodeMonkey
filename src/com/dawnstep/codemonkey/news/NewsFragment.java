@@ -5,12 +5,9 @@ import java.util.List;
 
 import com.dawnstep.codemonkey.CodeMonkeyApplication;
 import com.dawnstep.codemonkey.R;
-import com.dawnstep.codemonkey.service.data.NewsDataListener;
+import com.dawnstep.codemonkey.service.data.DataListener;
 import com.dawnstep.codemonkey.service.data.database.News;
 import com.dawnstep.codemonkey.service.data.database.NewsImage;
-import com.dawnstep.codemonkey.service.CodeMonkeyService;
-
-
 import com.dawnstep.codemonkey.service.CodeMonkeyService.CodeMonkeyBinder;
 
 import android.app.Activity;
@@ -35,7 +32,7 @@ import android.widget.TextView;
 import android.graphics.Bitmap; 
 import android.graphics.BitmapFactory;
 
-public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener, NewsDataListener {
+public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener, DataListener {
 	
 	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
