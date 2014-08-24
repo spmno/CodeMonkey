@@ -13,6 +13,7 @@ import com.dawnstep.codemonkey.service.data.database.NewSkillGetKind;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -138,9 +139,14 @@ public class NewSkillGetKindActivity extends Activity implements OnItemClickList
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		// TODO Auto-generated method stub
-		
+		NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
+		String currentKindId = newSkillGetKindManager.getNewSkillGetKindId(position);
+		NewSkillGetManager newSkillGetManager = NewSkillGetManager.getInstance();
+		newSkillGetManager.setCurrentSkillGetKind(currentKindId);
+		Intent intent = new Intent(this, NewSkillGetActivity.class);
+		startActivity(intent);
 	}
 
 }

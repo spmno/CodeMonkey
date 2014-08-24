@@ -36,4 +36,9 @@ public class NewSkillGetKindManager {
 	public void clear() {
 		this.newSkillGetKindList.clear();
 	}
+	
+	public String getNewSkillGetKindId(int position) {
+		return newSkillGetKindList.get(position).getNewSkillGetKindId();
+	}
+	
 }
