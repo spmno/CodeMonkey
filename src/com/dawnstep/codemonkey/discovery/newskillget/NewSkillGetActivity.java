@@ -9,15 +9,20 @@ import com.dawnstep.codemonkey.R;
 import com.dawnstep.codemonkey.service.CodeMonkeyService.CodeMonkeyBinder;
 import com.dawnstep.codemonkey.service.data.DataListener;
 import com.dawnstep.codemonkey.service.data.database.NewSkillGet;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class NewSkillGetActivity extends Activity implements DataListener {
+public class NewSkillGetActivity extends Activity implements DataListener, OnItemClickListener {
 	
 	private ListView newSkillGetListView;
 	private ProgressDialog progressDialog;
@@ -82,5 +87,18 @@ public class NewSkillGetActivity extends Activity implements DataListener {
 		// TODO Auto-generated method stub
 		newSkillGetHandler.sendEmptyMessage(0);
 		progressDialog.dismiss();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		// TODO Auto-generated method stub
+		NewSkillGetManager newSkillGetManager = NewSkillGetManager.getInstance();
+		String currentSkillGetId = newSkillGetManager.getNewSkillGetId(position);
+		
+		Intent intent = new Intent(this, NewSkillGetActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("newSkillGetId", currentSkillGetId);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 }

@@ -43,5 +43,11 @@ public class NewSkillGet {
 		this.updateTime = updateTime;
 	}
 
+	public String getNewSkillGetId() {
+		return String.valueOf(id);
+	}
+	public void setNewSkillGetId(String newSkillGetId) {
+		this.id = Integer.valueOf(newSkillGetId).intValue();
+	}
 	
 }

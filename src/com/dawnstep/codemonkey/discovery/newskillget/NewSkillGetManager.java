@@ -45,4 +45,8 @@ public class NewSkillGetManager {
 	public void setCurrentSkillGetKind(String currentSkillGetKind) {
 		this.currentSkillGetKind = currentSkillGetKind;
 	}
+	
+	public String getNewSkillGetId(int position) {
+		return newSkillGetList.get(position).get
+	}
 }

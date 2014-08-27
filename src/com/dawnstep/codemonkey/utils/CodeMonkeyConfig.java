@@ -24,6 +24,9 @@ public final class CodeMonkeyConfig {
 		return getNetRootPath() + "/infos";
 	}
 	
+	static public String getNewSkillGetPath() {
+		return getNetRootPath() + "/new_skill_gets";
+	}
 	//new skill get kind
 	static public String getNewSkillGetKindNetPath() {
 		if(Debug.ENABLE) {
