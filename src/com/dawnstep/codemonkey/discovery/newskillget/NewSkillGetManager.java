@@ -47,6 +47,6 @@ public class NewSkillGetManager {
 	}
 	
 	public String getNewSkillGetId(int position) {
-		return newSkillGetList.get(position).get
+		return newSkillGetList.get(position).getNewSkillGetId();
 	}
 }
