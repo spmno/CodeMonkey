@@ -46,8 +46,8 @@ public final class CodeMonkeyConfig {
 	//authenticate
 	static public String getAuthenticatePath() {
 		if(Debug.ENABLE) {
-			return "http://192.168.2.231:3000/sign_up.json";
+			return "http://192.168.2.231:3000/users/sign_in.json";
 		}
-		return "http://115.29.139.76:3000/sign_up.json";
+		return "http://115.29.139.76:3000/users/sign_in.json";
 	}
 }

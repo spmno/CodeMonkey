@@ -2,6 +2,7 @@ package com.dawnstep.codemonkey;
 
 import java.util.Locale;
 
+import com.dawnstep.codemonkey.auth.AuthenticationActivity;
 import com.dawnstep.codemonkey.discovery.DiscoveryFragment;
 import com.dawnstep.codemonkey.news.NewsFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -99,6 +100,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.action_settings: {
+			Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
+			startActivity(intent);
 			return true;
 		}
 		case R.id.action_myinfo: {

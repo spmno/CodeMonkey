@@ -17,7 +17,9 @@
     <string name="downloading_title">Downloading.</string>
     <string name="downloading_text">Downloading data.</string>
     <string name="title_activity_new_skill_get">NewSkillGet</string>
-    <string name="title_activity_new_skill_get_detail">NewSkillGetDetailActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_new_skill_get_detail">NewSkillGetDetail</string>
+    <string name="title_activity_authentication">Login</string>
+    <string name="user_name">UserName:</string>
+    <string name="password">Password:</string>
 
 </resources>

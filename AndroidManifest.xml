@@ -64,6 +64,10 @@
             android:name="com.dawnstep.codemonkey.discovery.newskillget.NewSkillGetDetailActivity"
             android:label="@string/title_activity_new_skill_get_detail" >
         </activity>
+        <activity
+            android:name="com.dawnstep.codemonkey.auth.AuthenticationActivity"
+            android:label="@string/title_activity_authentication" >
+        </activity>
     </application>
 
 </manifest>
