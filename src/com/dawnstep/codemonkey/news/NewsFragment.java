@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +34,14 @@ import android.widget.TextView;
 import android.graphics.Bitmap; 
 import android.graphics.BitmapFactory;
 
-public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener, DataListener {
+public class NewsFragment extends Fragment implements OnScrollListener, OnItemClickListener, DataListener, OnRefreshListener {
 	
 	private static final String TAG = "NewsFragment";
 	private ListView newsListView;
 	private NewsHandler newsHandler;
 	private NewsDataAdapter adapter;
 	private View moreView; //加载更多页面
+	private SwipeRefreshLayout swipeLayout; 
 	private int lastItem;
 	private ProgressDialog progressDialog;
 	private CodeMonkeyBinder codeMonkeyBinder;
@@ -49,7 +52,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		View rootView = inflater.inflate(R.layout.fragment_news, container,
 				false);
 		newsListView = (ListView)rootView.findViewById(R.id.newsListView);
-		
+		swipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.id_swipe_ly);
 		newsHandler = new NewsHandler(this);
 		moreView = getActivity().getLayoutInflater().inflate(R.layout.load, null);
 		adapter = new NewsDataAdapter();
@@ -57,7 +60,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		newsListView.setAdapter(adapter);
 		newsListView.setOnScrollListener(NewsFragment.this);
 		newsListView.setOnItemClickListener(this);		
-
+		swipeLayout.setOnRefreshListener(this);
 		Activity parentActivity = NewsFragment.this.getActivity();
 		progressDialog = new ProgressDialog(parentActivity);
 		String title = parentActivity.getResources().getString(R.string.downloading_title);
@@ -117,6 +120,7 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 			NewsFragment parentFragment = fragment.get();
 			parentFragment.adapter.notifyDataSetChanged();
 			parentFragment.moreView.setVisibility(View.GONE); 
+			parentFragment.swipeLayout.setRefreshing(false); 
 		}
 	}
 
@@ -194,5 +198,11 @@ public class NewsFragment extends Fragment implements OnScrollListener, OnItemCl
 		bundle.putString("newsId", currentNews.getNewsId());
 		intent.putExtras(bundle);
 		getActivity().startActivity(intent);
+	}
+
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		codeMonkeyBinder.getNews();
 	}
 }

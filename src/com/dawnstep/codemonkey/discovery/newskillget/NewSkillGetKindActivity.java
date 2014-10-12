@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class NewSkillGetKindActivity extends Activity implements OnItemClickListener {
+public class NewSkillGetKindActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class NewSkillGetKindActivity extends Activity implements OnItemClickList
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment implements DataListener {
+	public static class PlaceholderFragment extends Fragment implements DataListener, OnItemClickListener {
 		private ListView newSkillGetListView;
 		private ProgressDialog progressDialog;
 		private ArrayAdapter<String> newSkillGetKindAdapter;
@@ -88,6 +88,7 @@ public class NewSkillGetKindActivity extends Activity implements OnItemClickList
 					android.R.layout.simple_list_item_1, 
 					newSkillGetKindData);
 			newSkillGetListView.setAdapter(newSkillGetKindAdapter);
+			newSkillGetListView.setOnItemClickListener(this);
 			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
 			newSkillGetKindManager.clear();
 			
@@ -136,17 +137,17 @@ public class NewSkillGetKindActivity extends Activity implements OnItemClickList
 			newSkillGetKindHandler.sendEmptyMessage(0);
 			progressDialog.dismiss();
 		}
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		// TODO Auto-generated method stub
-		NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
-		String currentKindId = newSkillGetKindManager.getNewSkillGetKindId(position);
-		NewSkillGetManager newSkillGetManager = NewSkillGetManager.getInstance();
-		newSkillGetManager.setCurrentSkillGetKind(currentKindId);
-		Intent intent = new Intent(this, NewSkillGetActivity.class);
-		startActivity(intent);
+		
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+			// TODO Auto-generated method stub
+			NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
+			String currentKindId = newSkillGetKindManager.getNewSkillGetKindId(position);
+			NewSkillGetManager newSkillGetManager = NewSkillGetManager.getInstance();
+			newSkillGetManager.setCurrentSkillGetKind(currentKindId);
+			Intent intent = new Intent(getActivity(), NewSkillGetActivity.class);
+			startActivity(intent);
+		}
 	}
 
 }

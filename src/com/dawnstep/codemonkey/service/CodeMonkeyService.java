@@ -20,7 +20,7 @@ import android.util.Log;
 public class CodeMonkeyService extends Service {
 	
     private static final String TAG = "CodeMonkeyService"; 
-    private CodeMonkeyBinder newBinder = new CodeMonkeyBinder();
+    private CodeMonkeyBinder codeMonkeyBinder = new CodeMonkeyBinder();
     private CodeMonkeyDataProvider currentDataProvider;
     private Context appContext;
 	public CodeMonkeyService() {
@@ -42,7 +42,7 @@ public class CodeMonkeyService extends Service {
 	public IBinder onBind(Intent intent) {
 		// TODO: Return the communication channel to the service.
 		Log.i(TAG, "onBind");
-		return newBinder;
+		return codeMonkeyBinder;
 	}
 	
 	@Override

@@ -63,6 +63,7 @@ public class NewSkillGetActivity extends Activity implements DataListener, OnIte
 				android.R.layout.simple_list_item_1, 
 				newSkillGetData);
 		newSkillGetListView.setAdapter(newSkillGetAdapter);
+		newSkillGetListView.setOnItemClickListener(this);
 		NewSkillGetKindManager newSkillGetKindManager = NewSkillGetKindManager.getInstance();
 		newSkillGetKindManager.clear();
 		
